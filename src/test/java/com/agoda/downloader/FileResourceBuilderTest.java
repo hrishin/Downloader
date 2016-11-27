@@ -1,8 +1,10 @@
 package com.agoda.downloader;
 
 import com.agoda.downloader.domain.FileResource;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
