@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class FileResourceBuilderTest {
     @Test
-    public void prepareFilesResources() {
+    public void prepareFileResources() {
         String sources = "http://my.file.com/file, ftp://other.file.com/other, sftp://and.also.this/ending";
         FileResourceBuilder resourceBuilder = new FileResourceBuilder();
         List<FileResource> fileList = resourceBuilder.frFromCSV(sources);

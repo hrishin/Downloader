@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /**
  * FileResource is Unified File Resource for the context of application which supports
- * few other functionalities such as identify protocol and prepare files for
+ * few other functionalities such as identify protocol and prepare file name for
  * given URL
  */
 
@@ -28,8 +28,9 @@ public class FileResource {
 
     private String fileName() {
         String baseURL = this.baseURL;
-        String fileName = baseURL.substring(baseURL.lastIndexOf("/", baseURL.length()) + 1);
-        return fileName != null ? fileName : UUID.randomUUID().toString();
+        String fileName = baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
+        String uid = UUID.randomUUID().toString();
+        return fileName != null ? fileName + uid.substring(uid.lastIndexOf("-"), uid.length()) : uid;
     }
 
     private String protocol() throws MalformedURLException {
@@ -60,5 +61,9 @@ public class FileResource {
 
     public String getFilename() {
         return filename;
+    }
+
+    public boolean download(String path) {
+        return false;
     }
 }
