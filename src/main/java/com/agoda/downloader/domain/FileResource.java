@@ -30,7 +30,7 @@ public class FileResource {
         String baseURL = this.baseURL;
         String fileName = baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
         String uid = UUID.randomUUID().toString();
-        return fileName != null ? fileName + uid.substring(uid.lastIndexOf("-"), uid.length()) : uid;
+        return fileName != null ? uid.substring(uid.lastIndexOf("-"), uid.length()) + fileName : uid;
     }
 
     private String protocol() throws MalformedURLException {
