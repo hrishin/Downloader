@@ -1,6 +1,7 @@
 package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.DownloadState;
+import com.agoda.downloader.exception.DownloadException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -26,30 +27,25 @@ public class FtpDownloader implements Downloader {
     }
 
     @Override
-    public DownloadState download(String source, String path, String fileName) throws IOException {
-        processSourceURL(source);
-        FTPClient ftpClient = configuredFTPClient();
+    public DownloadState download(String source, String path, String fileName) throws DownloadException {
+        String downloadFile = path + fileName;
 
-        FTPFile[] files = ftpClient.listFiles(filePath);
-        if(files.length <=  0) {
+        try {
+            processSourceURL(source);
+            FTPClient ftpClient = configuredFTPClient();
+
+            FTPFile[] files = ftpClient.listFiles(this.filePath);
+            if(files.length <=  0) {
+                throw new IOException("File is empty, could not download it");
+            } else {
+                downloadFile(path, fileName, ftpClient);
+            }
+        } catch (IOException e) {
             this.downloadState = DownloadState.FAILED;
-        } else {
-            downloadFile(path, fileName, ftpClient);
+            throw new DownloadException(e, downloadFile);
         }
 
         return this.downloadState;
-    }
-
-    private void downloadFile(String path, String fileName, FTPClient ftpClient) throws IOException {
-        File downloadFile = new File(path + fileName);
-        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile))) {
-            boolean success = ftpClient.retrieveFile(this.filePath, outputStream);
-            if(success) {
-                this.downloadState = DownloadState.COMPLETED;
-            } else {
-                this.downloadState = DownloadState.FAILED;
-            }
-        }
     }
 
     private FTPClient configuredFTPClient() throws IOException {
@@ -64,6 +60,18 @@ public class FtpDownloader implements Downloader {
     private void confgFTPCredentials(FTPClient ftpClient) throws IOException {
         if(userName != null && password != null) {
             ftpClient.login(this.userName, this.password);
+        }
+    }
+
+    private void downloadFile(String path, String fileName, FTPClient ftpClient) throws IOException {
+        File downloadFile = new File(path + fileName);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile))) {
+            boolean success = ftpClient.retrieveFile(this.filePath, outputStream);
+            if(success) {
+                this.downloadState = DownloadState.COMPLETED;
+            } else {
+                this.downloadState = DownloadState.FAILED;
+            }
         }
     }
 
@@ -99,6 +107,6 @@ public class FtpDownloader implements Downloader {
 
     @Override
     public DownloadState getStatus() {
-        return null;
+        return this.downloadState;
     }
 }

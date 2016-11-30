@@ -1,6 +1,7 @@
 package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.DownloadState;
+import com.agoda.downloader.exception.DownloadException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,35 +27,75 @@ public class HttpDownloader implements Downloader {
     }
 
     @Override
-    public DownloadState download(String source, String path, String fileName) throws IOException {
+    public DownloadState download(String source, String path, String fileName) throws DownloadException {
         this.downloadState = DownloadState.INPROGRESS;
-        URL sourceUrl = new URL(source);
-        HttpURLConnection connection = (HttpURLConnection) sourceUrl.openConnection();
-        long fileSize = connection.getContentLengthLong();
-        LOGGER.info("File size :" + fileSize + " bytes");
-        LOGGER.info("File size :" + inMB(fileSize) + " MB");
+        String downloadFile = path + fileName;
+        InputStream downloadStream = null;
+        FileOutputStream fos = null;
 
-        if(fileSize <= 0) {
-            LOGGER.warning("Empty file");
+
+        try {
+            URL sourceUrl = new URL(source);
+            HttpURLConnection connection = (HttpURLConnection) sourceUrl.openConnection();
+            long fileSize = connection.getContentLengthLong();
+            LOGGER.info("File size :" + fileSize + " bytes");
+            LOGGER.info("File size :" + inMB(fileSize) + " MB");
+
+            if(fileSize <= 0) {
+                throw new IOException("File is empty, could not download it");
+            }
+
+            downloadStream = connection.getInputStream();
+            ReadableByteChannel readChannel = Channels.newChannel(downloadStream);
+
+            File outputFile = new File(downloadFile);
+            fos = new FileOutputStream(outputFile);
+            FileChannel writeChannel = fos.getChannel();
+
+            long bytesTransferred = writeChannel.transferFrom(readChannel, 0, fileSize);
+
+            fos.close();
+
+            if(bytesTransferred != fileSize) {
+                throw new IOException("Partial file download");
+            } else {
+                this.downloadState = DownloadState.COMPLETED;
+            }
+
+        } catch (IOException e) {
             this.downloadState = DownloadState.FAILED;
-            return this.downloadState;
+            throw new DownloadException(e, downloadFile);
+        } finally {
+            cleanUpStreams(downloadStream, fos);
         }
 
-        InputStream downloadStream = connection.getInputStream();
-        ReadableByteChannel readChannel = Channels.newChannel(downloadStream);
-
-        File outputFile = new File(path + fileName);
-        FileOutputStream fos = new FileOutputStream(outputFile);
-        FileChannel writeChannel = fos.getChannel();
-
-        long bytesTransfered = writeChannel.transferFrom(readChannel, 0, fileSize);
-
-        fos.close();
-
-        this.downloadState = (bytesTransfered == fileSize) ?
-                        DownloadState.COMPLETED : DownloadState.FAILED;
-
         return this.downloadState;
+    }
+
+    private void cleanUpStreams(InputStream downloadStream, FileOutputStream fos) {
+        flushAndCloseStream(fos);
+        closeStream(downloadStream);
+    }
+
+    private void closeStream(InputStream downloadStream) {
+        if(downloadStream != null) {
+            try {
+                downloadStream.close();
+            } catch (IOException e) {
+                LOGGER.warning("HttpDownloader Stream close issue");
+            }
+        }
+    }
+
+    private void flushAndCloseStream(FileOutputStream fos) {
+        if(fos != null) {
+            try {
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                LOGGER.warning("HttpDownloader Stream close issue");
+            }
+        }
     }
 
     private long inMB(long fileSize) {

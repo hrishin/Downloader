@@ -2,6 +2,7 @@ package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.exception.DownloadException;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class DownloaderTest {
 
     @Test
-    public void fromHTTP() throws IOException {
+    public void fromHTTP() throws IOException, DownloadException {
         String source = "https://s3.ap-south-1.amazonaws.com/hriships/HrishikeshShinde_resume.pdf";
         String path = "/Users/hrishikeshshinde/";
         FileResource fileResource =  new FileResource(source);
@@ -26,8 +27,8 @@ public class DownloaderTest {
         assertTrue(status == DownloadState.COMPLETED);
     }
 
-    @Test
-    public void emptyFileFromHTTP() throws IOException {
+    @Test(expected = DownloadException.class)
+    public void emptyFileFromHTTP() throws IOException, DownloadException {
         String source = "https://s3.ap-south-1.amazonaws.com/hriships";
         String path = "/Users/hrishikeshshinde/";
         FileResource fileResource =  new FileResource(source);
@@ -35,11 +36,10 @@ public class DownloaderTest {
 
         Downloader downloader = new HttpDownloader();
         DownloadState status = downloader.download(source, path, fileName);
-        assertTrue(status == DownloadState.FAILED);
     }
 
     @Test
-    public void fromFTP() throws IOException {
+    public void fromFTP() throws IOException, DownloadException {
         String source = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
         String path = "/Users/hrishikeshshinde/";
         FileResource fileResource =  new FileResource(source);
