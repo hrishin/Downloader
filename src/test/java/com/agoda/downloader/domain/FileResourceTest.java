@@ -15,12 +15,12 @@ public class FileResourceTest {
     @Test
     public void getResourceFileName() throws MalformedURLException {
         String source = "https://s3.ap-south-1.amazonaws.com/hriships/HrishikeshShinde_resume.pdf";
-        FileResource fileResource1 = new FileResource(source);
-        FileResource fileResource2 = new FileResource(source);
+        String expectedFileName = "HrishikeshShinde_resume.pdf";
 
-        String filename1 = fileResource1.getFilename();
-        String filename2 = fileResource2.getFilename();
-        assertFalse(filename1.equals(filename2));
+        FileResource fileResource = new FileResource(source);
+
+        String filename = fileResource.getFilename();
+        assertFalse(filename.equals(expectedFileName));
     }
 
     @Test

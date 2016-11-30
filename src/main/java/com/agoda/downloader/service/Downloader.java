@@ -1,9 +1,8 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.domain.DownloadState;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 /**
  * Created by hrishikeshshinde on 29/11/16.
@@ -11,5 +10,6 @@ import java.net.MalformedURLException;
 public interface Downloader {
 
 
-    boolean download(String source, String path, String fileName) throws IOException;
+    DownloadState download(String source, String path, String fileName) throws IOException;
+    DownloadState getStatus();
 }

@@ -1,11 +1,11 @@
 package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.domain.DownloadState;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.
@@ -20,7 +20,9 @@ public class DownloaderTest {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new HttpDownloader();
-        boolean status = downloader.download(source, path, fileName);
-        Assert.assertTrue(status);
+        DownloadState status = downloader.download(source, path, fileName);
+        Assert.assertTrue(status == DownloadState.COMPLETED);
     }
+
+
 }

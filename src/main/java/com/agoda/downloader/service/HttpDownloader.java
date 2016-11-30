@@ -1,6 +1,6 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.domain.DownloadState;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -18,8 +17,15 @@ import java.nio.channels.ReadableByteChannel;
  */
 public class HttpDownloader implements Downloader {
 
+    private DownloadState downloadState;
+
+    public HttpDownloader() {
+        downloadState = DownloadState.INITIAL;
+    }
+
     @Override
-    public boolean download(String source, String path, String fileName) throws IOException {
+    public DownloadState download(String source, String path, String fileName) throws IOException {
+        downloadState = DownloadState.INPROGRESS;
         URL sourceUrl = new URL(source);
         HttpURLConnection connection = (HttpURLConnection) sourceUrl.openConnection();
         long fileSize = connection.getContentLengthLong();
@@ -35,6 +41,14 @@ public class HttpDownloader implements Downloader {
 
         fos.close();
 
-        return bytesTransfered == fileSize;
+        downloadState = (bytesTransfered == fileSize) ?
+                        DownloadState.COMPLETED : DownloadState.FAILED;
+
+        return downloadState;
+    }
+
+    @Override
+    public DownloadState getStatus() {
+        return downloadState;
     }
 }
