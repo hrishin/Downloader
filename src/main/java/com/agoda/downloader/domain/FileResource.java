@@ -4,8 +4,6 @@ package com.agoda.downloader.domain;
  * Created by hrishikeshshinde on 27/11/16.
  */
 
-import org.mockito.internal.matchers.Null;
-
 import java.net.MalformedURLException;
 import java.util.UUID;
 

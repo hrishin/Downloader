@@ -3,7 +3,6 @@ package com.agoda.downloader.service;
 import com.agoda.downloader.domain.DownloadState;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.*;

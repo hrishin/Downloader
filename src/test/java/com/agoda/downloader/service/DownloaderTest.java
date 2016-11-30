@@ -1,17 +1,11 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.FileResource;
 import com.agoda.downloader.domain.DownloadState;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.junit.Assert;
+import com.agoda.downloader.domain.FileResource;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.util.Arrays;
+import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
