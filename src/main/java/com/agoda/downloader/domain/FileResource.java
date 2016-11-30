@@ -27,10 +27,13 @@ public class FileResource {
     }
 
     private String fileName() {
-        String baseURL = this.baseURL;
-        String fileName = baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
-        String uid = UUID.randomUUID().toString();
-        return fileName != null ? uid.substring(uid.lastIndexOf("-"), uid.length()) + fileName : uid;
+        String fileName = buildFileName(this.baseURL);
+        return fileName == null || fileName.trim().length() == 0 ? UUID.randomUUID().toString()
+                                                                    :fileName;
+    }
+
+    private String buildFileName(String baseURL) {
+        return baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
     }
 
     private String protocol() throws MalformedURLException {
@@ -63,7 +66,4 @@ public class FileResource {
         return filename;
     }
 
-    public boolean download(String path) {
-        return false;
-    }
 }

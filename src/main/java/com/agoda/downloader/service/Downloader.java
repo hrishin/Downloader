@@ -9,7 +9,6 @@ import java.io.IOException;
  */
 public interface Downloader {
 
-
     DownloadState download(String source, String path, String fileName) throws IOException;
     DownloadState getStatus();
 }

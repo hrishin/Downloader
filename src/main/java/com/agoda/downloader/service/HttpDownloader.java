@@ -11,13 +11,15 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.util.logging.Logger;
 
 /**
  * Created by hrishikeshshinde on 29/11/16.
  */
 public class HttpDownloader implements Downloader {
+    private final static Logger LOGGER = Logger.getLogger(HttpDownloader.class.getName());
 
-    private DownloadState downloadState;
+    private volatile DownloadState downloadState;
 
     public HttpDownloader() {
         downloadState = DownloadState.INITIAL;
@@ -25,27 +27,44 @@ public class HttpDownloader implements Downloader {
 
     @Override
     public DownloadState download(String source, String path, String fileName) throws IOException {
-        downloadState = DownloadState.INPROGRESS;
+        this.downloadState = DownloadState.INPROGRESS;
         URL sourceUrl = new URL(source);
         HttpURLConnection connection = (HttpURLConnection) sourceUrl.openConnection();
         long fileSize = connection.getContentLengthLong();
+        LOGGER.info("File size :" + fileSize + " bytes");
+        LOGGER.info("File size :" + inMB(fileSize) + " MB");
 
-        InputStream is = connection.getInputStream();
-        ReadableByteChannel rbc1 = Channels.newChannel(is);
+        if(fileSize <= 0) {
+            LOGGER.warning("Empty file");
+            this.downloadState = DownloadState.FAILED;
+            return this.downloadState;
+        }
+
+        InputStream downloadStream = connection.getInputStream();
+        ReadableByteChannel readChannel = Channels.newChannel(downloadStream);
+
         File outputFile = new File(path + fileName);
         FileOutputStream fos = new FileOutputStream(outputFile);
+        FileChannel writeChannel = fos.getChannel();
 
-        FileChannel fileChannel1 = fos.getChannel();
-
-        long bytesTransfered = fileChannel1.transferFrom(rbc1, 0, fileSize);
+        long bytesTransfered = writeChannel.transferFrom(readChannel, 0, fileSize);
 
         fos.close();
 
-        downloadState = (bytesTransfered == fileSize) ?
+        this.downloadState = (bytesTransfered == fileSize) ?
                         DownloadState.COMPLETED : DownloadState.FAILED;
 
-        return downloadState;
+        return this.downloadState;
     }
+
+    private long inMB(long fileSize) {
+        return inKB(fileSize) / 1024;
+    }
+
+    private long inKB(long fileSize) {
+        return fileSize/1024;
+    }
+
 
     @Override
     public DownloadState getStatus() {

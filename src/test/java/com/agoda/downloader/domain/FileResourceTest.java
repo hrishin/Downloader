@@ -20,7 +20,7 @@ public class FileResourceTest {
         FileResource fileResource = new FileResource(source);
 
         String filename = fileResource.getFilename();
-        assertFalse(filename.equals(expectedFileName));
+        assertTrue(filename.equals(expectedFileName));
     }
 
     @Test

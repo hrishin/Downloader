@@ -26,6 +26,7 @@ public class FileResourceBuilder {
                         return null;
                     }
                 })
+                .filter(re -> re != null)
                 .collect(Collectors.toList());
     }
 }
