@@ -1,6 +1,6 @@
 package com.agoda.downloader.cliutil;
 
-import com.agoda.downloader.domain.OPTION_NAME;
+import com.agoda.downloader.domain.CLIOptions;
 import org.apache.commons.cli.*;
 
 /**
@@ -12,11 +12,11 @@ public class CLIUtil {
     private static Options options;
 
     public static void initOptions(String[] args) throws ParseException {
-        Option firstNDataOption = new Option(OPTION_NAME.DOWNLOAD_LOCATION_SS.toString(), OPTION_NAME.DOWNLOAD_LOCATION_LS.toString(),
+        Option firstNDataOption = new Option(CLIOptions.DOWNLOAD_LOCATION_SS.toString(), CLIOptions.DOWNLOAD_LOCATION_LS.toString(),
                                             true, "Local download path");
-        Option inputDataOption  = new Option(OPTION_NAME.DOWNLOAD_SOURCE_SS.toString(),
-                                            OPTION_NAME.DOWNLOAD_SOURCE_LS.toString(), true, "Downlaod data sources in csv form");
-        Option helpOption 		= new Option(OPTION_NAME.HELP_SS.toString(), "Help");
+        Option inputDataOption  = new Option(CLIOptions.DOWNLOAD_SOURCE_SS.toString(),
+                                            CLIOptions.DOWNLOAD_SOURCE_LS.toString(), true, "Downlaod data sources in csv form");
+        Option helpOption 		= new Option(CLIOptions.HELP_SS.toString(), "Help");
 
         options = new Options();
         options.addOption(firstNDataOption);
@@ -28,7 +28,7 @@ public class CLIUtil {
 
     }
 
-    public static String getOptionValue(OPTION_NAME switchName) {
+    public static String getOptionValue(CLIOptions switchName) {
         if (commandLine.hasOption(switchName.toString())) {
             return commandLine.getOptionValue(switchName.toString());
         } else {
@@ -37,7 +37,7 @@ public class CLIUtil {
     }
 
     public static void checkIfNeedHelp() {
-        if(commandLine.hasOption(OPTION_NAME.HELP_SS.toString())) {
+        if(commandLine.hasOption(CLIOptions.HELP_SS.toString())) {
             help();
         }
     }

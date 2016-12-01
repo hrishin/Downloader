@@ -1,6 +1,7 @@
-package com.agoda.downloader;
+package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.service.FileResourceBuilder;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class FileResourceBuilderTest {
     public void prepareFileResources() {
         String sources = "http://my.file.com/file, ftp://other.file.com/other, sftp://and.also.this/ending";
         FileResourceBuilder resourceBuilder = new FileResourceBuilder();
-        List<FileResource> fileList = resourceBuilder.frFromCSV(sources);
+        List<FileResource> fileList = resourceBuilder.resourcesFromCSV(sources);
 
         assertEquals(3, fileList.size());
     }
@@ -25,7 +26,7 @@ public class FileResourceBuilderTest {
     public void validateResourceProtocol() {
         String sources = "http://my.file.com/file, https://my.file.com/file, ftp://other.file.com/other, sftp://and.also.this/ending";
         FileResourceBuilder resourceBuilder = new FileResourceBuilder();
-        List<FileResource> fileList = resourceBuilder.frFromCSV(sources);
+        List<FileResource> fileList = resourceBuilder.resourcesFromCSV(sources);
 
         fileList.forEach(resource -> {
             assertTrue(havingValidProtocol(resource));

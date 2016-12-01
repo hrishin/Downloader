@@ -1,6 +1,6 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.DOWNLOAD_STATE;
+import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
 import com.agoda.downloader.protocols.Downloader;
 
@@ -27,10 +27,10 @@ public class DownloadActivity {
         this.downloadPath = downloadPath;
     }
 
-    public Callable<DOWNLOAD_STATE> getCallable() {
-        Callable<DOWNLOAD_STATE> downloadCallable = new Callable<DOWNLOAD_STATE>() {
+    public Callable<DownloadState> getCallable() {
+        Callable<DownloadState> downloadCallable = new Callable<DownloadState>() {
             @Override
-            public DOWNLOAD_STATE call() throws Exception {
+            public DownloadState call() throws Exception {
                 downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
                 return downloader.getStatus();
             }

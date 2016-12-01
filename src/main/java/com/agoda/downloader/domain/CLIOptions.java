@@ -3,7 +3,7 @@ package com.agoda.downloader.domain;
 /**
  * Created by hrishikeshshinde on 01/12/16.
  */
-public enum OPTION_NAME {
+public enum CLIOptions {
     DOWNLOAD_LOCATION_SS("dl"),
     DOWNLOAD_LOCATION_LS("dlpath"),
     DOWNLOAD_SOURCE_SS("s"),
@@ -13,7 +13,7 @@ public enum OPTION_NAME {
 
     private final transient Object value;
 
-    private OPTION_NAME(final Object value) {
+    private CLIOptions(final Object value) {
         this.value = value;
     }
 

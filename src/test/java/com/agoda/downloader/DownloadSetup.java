@@ -1,11 +1,11 @@
-package com.agoda.downloader.service;
+package com.agoda.downloader;
 
 import org.junit.Before;
 
 /**
  * Created by hrishikesh_shinde on 12/1/2016.
  */
-public class TestSetup {
+public class DownloadSetup {
 
     protected String downloadLocation;
     protected String httpResource;

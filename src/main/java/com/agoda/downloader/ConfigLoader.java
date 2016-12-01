@@ -1,7 +1,7 @@
 package com.agoda.downloader;
 
 import com.agoda.downloader.cliutil.CLIUtil;
-import com.agoda.downloader.domain.OPTION_NAME;
+import com.agoda.downloader.domain.CLIOptions;
 import com.agoda.downloader.exception.ConfigurationException;
 import org.apache.commons.cli.ParseException;
 
@@ -21,7 +21,7 @@ public class ConfigLoader {
     }
 
     public String getDownloadLocation() throws ConfigurationException {
-        String downloadLocation = CLIUtil.getOptionValue(OPTION_NAME.DOWNLOAD_LOCATION_SS);
+        String downloadLocation = CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_LOCATION_SS);
         downloadLocation = downloadLocation.endsWith("/") ?
                         downloadLocation : downloadLocation+"/";
         validatePath(downloadLocation);
@@ -47,6 +47,6 @@ public class ConfigLoader {
     }
 
     public String getSources() {
-        return  CLIUtil.getOptionValue(OPTION_NAME.DOWNLOAD_SOURCE_SS);
+        return  CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_SOURCE_SS);
     }
 }

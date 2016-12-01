@@ -1,23 +1,21 @@
-package com.agoda.downloader.service;
+package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DOWNLOAD_STATE;
+import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
 import com.agoda.downloader.exception.DownloadException;
-import com.agoda.downloader.protocols.Downloader;
-import com.agoda.downloader.protocols.FtpDownloader;
-import com.agoda.downloader.protocols.HttpDownloader;
+import com.agoda.downloader.DownloadSetup;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.agoda.downloader.domain.DOWNLOAD_STATE.COMPLETED;
+import static com.agoda.downloader.domain.DownloadState.COMPLETED;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.
  */
-public class DownloaderTest extends TestSetup {
+public class DownloaderTest extends DownloadSetup {
 
     @Test
     public void fromHTTP() throws IOException, DownloadException {
@@ -26,7 +24,7 @@ public class DownloaderTest extends TestSetup {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new HttpDownloader();
-        DOWNLOAD_STATE status = downloader.download(source, downloadLocation, fileName);
+        DownloadState status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
     }
 
@@ -48,20 +46,7 @@ public class DownloaderTest extends TestSetup {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new FtpDownloader();
-        DOWNLOAD_STATE status = downloader.download(source, downloadLocation, fileName);
+        DownloadState status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
-    }
-
-    @Test
-    @Ignore
-    public void getPath() {
-        String test = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
-        String[] test1 = test.split("@");
-        String userName = test1[0].split("//")[1];
-        String password = test1[1];
-        String[] tests = test.split("//");
-        String server = tests[1].substring(0, tests[1].indexOf("/"));
-        String file = tests[1].substring(tests[1].indexOf("/"), tests[1].length());
-        System.out.print(server + ": " + file);
     }
 }

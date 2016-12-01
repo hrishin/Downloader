@@ -1,4 +1,4 @@
-package com.agoda.downloader;
+package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.FileResource;
 
@@ -15,7 +15,7 @@ public class FileResourceBuilder {
 
     private static final Logger LOGGER = Logger.getLogger(FileResourceBuilder.class.getName());
 
-    public List<FileResource> frFromCSV(final String sources) {
+    public List<FileResource> resourcesFromCSV(final String sources) {
         return Arrays.asList(sources.split(","))
                 .stream()
                 .map(url -> {

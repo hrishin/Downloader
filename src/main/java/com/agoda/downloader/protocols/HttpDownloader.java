@@ -1,6 +1,6 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DOWNLOAD_STATE;
+import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.exception.DownloadException;
 
 import java.io.File;
@@ -20,15 +20,15 @@ import java.util.logging.Logger;
 public class HttpDownloader implements Downloader {
     private final static Logger LOGGER = Logger.getLogger(HttpDownloader.class.getName());
 
-    private volatile DOWNLOAD_STATE downloadState;
+    private volatile DownloadState downloadState;
 
     public HttpDownloader() {
-        downloadState = DOWNLOAD_STATE.INITIAL;
+        downloadState = DownloadState.INITIAL;
     }
 
     @Override
-    public DOWNLOAD_STATE download(String source, String path, String fileName) throws DownloadException {
-        this.downloadState = DOWNLOAD_STATE.INPROGRESS;
+    public DownloadState download(String source, String path, String fileName) throws DownloadException {
+        this.downloadState = DownloadState.INPROGRESS;
         String downloadFile = path + fileName;
         InputStream downloadStream = null;
         FileOutputStream fos = null;
@@ -59,11 +59,11 @@ public class HttpDownloader implements Downloader {
             if(bytesTransferred != fileSize) {
                 throw new IOException("Failed to download the file");
             } else {
-                this.downloadState = DOWNLOAD_STATE.COMPLETED;
+                this.downloadState = DownloadState.COMPLETED;
             }
 
         } catch (IOException e) {
-            this.downloadState = DOWNLOAD_STATE.FAILED;
+            this.downloadState = DownloadState.FAILED;
             throw new DownloadException(e, downloadFile);
         } finally {
             cleanUpStreams(downloadStream, fos);
@@ -107,7 +107,7 @@ public class HttpDownloader implements Downloader {
     }
 
     @Override
-    public DOWNLOAD_STATE getStatus() {
+    public DownloadState getStatus() {
         return this.downloadState;
     }
 }
