@@ -2,6 +2,7 @@ package com.agoda.downloader.service;
 
 import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.protocols.Downloader;
 
 import java.util.concurrent.Callable;
 
@@ -16,7 +17,7 @@ public class DownloadActivity {
 
     public DownloadActivity(FileResource fileResource, String downloadPath) {
         this.fileResource = fileResource;
-        this.downloader = getDownloader(this.fileResource);
+        this.downloader = this.fileResource.getDownloader();
         this.downloadPath = downloadPath;
     }
 
@@ -24,21 +25,6 @@ public class DownloadActivity {
         this.fileResource = fileResource;
         this.downloader = downloader;
         this.downloadPath = downloadPath;
-    }
-
-    private Downloader getDownloader(FileResource fileResource) {
-        switch (fileResource.getProtocol()) {
-            case "http":
-            case "https":
-                return new HttpDownloader();
-
-            case "ftp":
-            case "sftp":
-                return new FtpDownloader();
-
-            default:
-                return null;
-        }
     }
 
     public Callable<DownloadState> getCallable() {

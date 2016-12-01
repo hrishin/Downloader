@@ -3,6 +3,9 @@ package com.agoda.downloader.service;
 import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
 import com.agoda.downloader.exception.DownloadException;
+import com.agoda.downloader.protocols.Downloader;
+import com.agoda.downloader.protocols.FtpDownloader;
+import com.agoda.downloader.protocols.HttpDownloader;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -31,7 +34,7 @@ public class DownloaderTest {
     @Test(expected = DownloadException.class)
     public void emptyFileFromHTTP() throws IOException, DownloadException {
         String source = "https://s3.ap-south-1.amazonaws.com/hriships";
-        String path = "/Users/hrishikeshshinde/";
+        String path = "/Users/hrishikeshshinde/downloadtest/";
         FileResource fileResource =  new FileResource(source);
         String fileName = fileResource.getFilename();
 
@@ -42,7 +45,7 @@ public class DownloaderTest {
     @Test
     public void fromFTP() throws IOException, DownloadException {
         String source = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
-        String path = "/Users/hrishikeshshinde/";
+        String path = "/Users/hrishikeshshinde/downloadtest/";
         FileResource fileResource =  new FileResource(source);
         String fileName = fileResource.getFilename();
 

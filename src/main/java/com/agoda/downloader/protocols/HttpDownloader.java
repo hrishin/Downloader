@@ -1,4 +1,4 @@
-package com.agoda.downloader.service;
+package com.agoda.downloader.protocols;
 
 import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.exception.DownloadException;

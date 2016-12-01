@@ -19,7 +19,7 @@ public class DownloadActivityTest {
     @Test
     public void callableHttpDownloadTask() throws MalformedURLException, ExecutionException, InterruptedException {
         String source = "https://s3.ap-south-1.amazonaws.com/hriships/HrishikeshShinde_resume.pdf";
-        String path = "/Users/hrishikeshshinde/";
+        String path = "/Users/hrishikeshshinde/downloadtest/";
         FileResource fileResource = new FileResource(source);
         DownloadActivity activity = new DownloadActivity(fileResource, path);
         FutureTask<DownloadState> downloadTask = new FutureTask<DownloadState>(activity.getCallable());
@@ -32,7 +32,7 @@ public class DownloadActivityTest {
     @Test
     public void callableFtpDownloadTask() throws MalformedURLException, ExecutionException, InterruptedException {
         String source = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
-        String path = "/Users/hrishikeshshinde/";
+        String path = "/Users/hrishikeshshinde/downloadtest/";
         FileResource fileResource = new FileResource(source);
         DownloadActivity activity = new DownloadActivity(fileResource, path);
         FutureTask<DownloadState> downloadTask = new FutureTask<DownloadState>(activity.getCallable());
