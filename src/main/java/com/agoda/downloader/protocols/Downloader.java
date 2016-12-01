@@ -1,6 +1,6 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DownloadState;
+import com.agoda.downloader.domain.DOWNLOAD_STATE;
 import com.agoda.downloader.exception.DownloadException;
 
 /**
@@ -8,6 +8,6 @@ import com.agoda.downloader.exception.DownloadException;
  */
 public interface Downloader {
 
-    DownloadState download(String source, String path, String fileName) throws DownloadException;
-    DownloadState getStatus();
+    DOWNLOAD_STATE download(String source, String path, String fileName) throws DownloadException;
+    DOWNLOAD_STATE getStatus();
 }

@@ -1,6 +1,6 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.DownloadState;
+import com.agoda.downloader.domain.DOWNLOAD_STATE;
 import com.agoda.downloader.domain.FileResource;
 import com.agoda.downloader.exception.DownloadException;
 import com.agoda.downloader.protocols.Downloader;
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.agoda.downloader.domain.DownloadState.COMPLETED;
+import static com.agoda.downloader.domain.DOWNLOAD_STATE.COMPLETED;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -26,7 +26,7 @@ public class DownloaderTest extends TestSetup {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new HttpDownloader();
-        DownloadState status = downloader.download(source, downloadLocation, fileName);
+        DOWNLOAD_STATE status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
     }
 
@@ -48,7 +48,7 @@ public class DownloaderTest extends TestSetup {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new FtpDownloader();
-        DownloadState status = downloader.download(source, downloadLocation, fileName);
+        DOWNLOAD_STATE status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
     }
 

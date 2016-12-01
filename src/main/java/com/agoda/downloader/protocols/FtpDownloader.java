@@ -1,6 +1,6 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DownloadState;
+import com.agoda.downloader.domain.DOWNLOAD_STATE;
 import com.agoda.downloader.exception.DownloadException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -23,14 +23,14 @@ public class FtpDownloader implements Downloader {
     private String filePath;
     private String userName;
     private String password;
-    private volatile DownloadState downloadState;
+    private volatile DOWNLOAD_STATE downloadState;
 
     public FtpDownloader() {
-        this.downloadState = DownloadState.INITIAL;
+        this.downloadState = DOWNLOAD_STATE.INITIAL;
     }
 
     @Override
-    public DownloadState download(String source, String path, String fileName) throws DownloadException {
+    public DOWNLOAD_STATE download(String source, String path, String fileName) throws DownloadException {
         String downloadFile = path + fileName;
         FTPClient ftpClient = null;
 
@@ -45,7 +45,7 @@ public class FtpDownloader implements Downloader {
                 downloadFile(path, fileName, ftpClient);
             }
         } catch (IOException e) {
-            this.downloadState = DownloadState.FAILED;
+            this.downloadState = DOWNLOAD_STATE.FAILED;
             throw new DownloadException(e, downloadFile);
         } finally {
             cleanUP(ftpClient);
@@ -82,7 +82,7 @@ public class FtpDownloader implements Downloader {
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile))) {
             boolean success = ftpClient.retrieveFile(this.filePath, outputStream);
             if(success) {
-                this.downloadState = DownloadState.COMPLETED;
+                this.downloadState = DOWNLOAD_STATE.COMPLETED;
             } else {
                 throw new IOException("Failed to download the file");
             }
@@ -120,7 +120,7 @@ public class FtpDownloader implements Downloader {
     }
 
     @Override
-    public DownloadState getStatus() {
+    public DOWNLOAD_STATE getStatus() {
         return this.downloadState;
     }
 }
