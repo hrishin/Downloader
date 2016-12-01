@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertTrue;
+import static com.agoda.downloader.domain.DownloadState.COMPLETED;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.
@@ -24,7 +25,7 @@ public class DownloaderTest {
 
         Downloader downloader = new HttpDownloader();
         DownloadState status = downloader.download(source, path, fileName);
-        assertTrue(status == DownloadState.COMPLETED);
+        assertEquals(COMPLETED, status);
     }
 
     @Test(expected = DownloadException.class)
@@ -35,7 +36,7 @@ public class DownloaderTest {
         String fileName = fileResource.getFilename();
 
         Downloader downloader = new HttpDownloader();
-        DownloadState status = downloader.download(source, path, fileName);
+        downloader.download(source, path, fileName);
     }
 
     @Test
@@ -47,7 +48,7 @@ public class DownloaderTest {
 
         Downloader downloader = new FtpDownloader();
         DownloadState status = downloader.download(source, path, fileName);
-        assertTrue(status == DownloadState.COMPLETED);
+        assertEquals(COMPLETED, status);
     }
 
     @Test

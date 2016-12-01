@@ -70,7 +70,7 @@ public class FtpDownloader implements Downloader {
             if(success) {
                 this.downloadState = DownloadState.COMPLETED;
             } else {
-                this.downloadState = DownloadState.FAILED;
+                throw new IOException("Failed to download the file");
             }
         }
     }

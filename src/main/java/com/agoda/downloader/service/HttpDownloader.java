@@ -57,7 +57,7 @@ public class HttpDownloader implements Downloader {
             fos.close();
 
             if(bytesTransferred != fileSize) {
-                throw new IOException("Partial file download");
+                throw new IOException("Failed to download the file");
             } else {
                 this.downloadState = DownloadState.COMPLETED;
             }
@@ -106,9 +106,8 @@ public class HttpDownloader implements Downloader {
         return fileSize/1024;
     }
 
-
     @Override
     public DownloadState getStatus() {
-        return downloadState;
+        return this.downloadState;
     }
 }
