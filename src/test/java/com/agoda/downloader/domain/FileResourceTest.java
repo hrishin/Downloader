@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.

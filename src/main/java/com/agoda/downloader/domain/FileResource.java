@@ -4,7 +4,10 @@ package com.agoda.downloader.domain;
  * Created by hrishikeshshinde on 27/11/16.
  */
 
-import org.mockito.internal.matchers.Null;
+import com.agoda.downloader.protocols.Downloader;
+import com.agoda.downloader.protocols.FtpDownloader;
+import com.agoda.downloader.protocols.HttpDownloader;
+import com.agoda.downloader.protocols.ProtocolFactory;
 
 import java.net.MalformedURLException;
 import java.util.UUID;
@@ -66,4 +69,7 @@ public class FileResource {
         return filename;
     }
 
+    public Downloader getDownloader() {
+        return ProtocolFactory.getProtocol(protocol);
+    }
 }
