@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /**
  * FileResource is File Resource for the context of application which supports
- * few other functionalities such as identify protocol and prepare file name for
+ * few other functionalities such as identify extractProtocol and prepare file name for
  * given URL
  */
 
@@ -25,8 +25,8 @@ public class FileResource {
     public FileResource(String baseURL) throws MalformedURLException {
         validate(baseURL);
         this.baseURL = baseURL;
-        this.protocol = protocol();
-        this.filename = fileName();
+        this.protocol = extractProtocol();
+        this.filename = generateFileName();
     }
 
     /**
@@ -37,33 +37,40 @@ public class FileResource {
 
     }
 
-    private String fileName() {
-        String fileName = buildFileName(this.baseURL);
-        return fileName == null || fileName.trim().length() == 0 ? UUID.randomUUID().toString()
-                                                                    :fileName;
-    }
 
     /**
-     * Constructs the filename by given URL
-     * @param baseURL
-     * @return
-     */
-    private String buildFileName(String baseURL) {
-        return baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
-    }
-
-    /**
-     * Extracts the protocol of resources to use for downloading the resource
+     * Extracts the extractProtocol of resources to use for downloading the resource
      * @return
      * @throws MalformedURLException
      */
-    private String protocol() throws MalformedURLException {
+    private String extractProtocol() throws MalformedURLException {
         String protocol = this.baseURL.substring(0, this.baseURL.indexOf(":"));
         if(protocol == null || !Protocol.isSupported(protocol)) {
-            throw new MalformedURLException("Invalid protocol");
+            throw new MalformedURLException("Invalid extractProtocol");
         }
 
         return protocol.toLowerCase();
+    }
+
+    private String generateFileName() {
+        String fileName = buildFileName();
+        return checkIfNull(fileName);
+    }
+
+    private String buildFileName() {
+        return baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
+    }
+
+    private String checkIfNull(String fileName) {
+        return fileNameIsNull(fileName) ? UUID.randomUUID().toString(): getUniqueFileName(fileName);
+    }
+
+    private String getUniqueFileName(String fileName) {
+        return baseURL.hashCode()+"_"+fileName;
+    }
+
+    private boolean fileNameIsNull(String fileName) {
+        return fileName == null || fileName.trim().length() == 0;
     }
 
     public String getBaseURL() {
@@ -74,7 +81,7 @@ public class FileResource {
     public String toString() {
         return "FileResource{" +
                 "baseURL='" + baseURL + '\'' +
-                ", protocol='" + protocol + '\'' +
+                ", extractProtocol='" + protocol + '\'' +
                 ", filename='" + filename + '\'' +
                 '}';
     }

@@ -20,7 +20,7 @@ public class FileResourceTest {
         FileResource fileResource = new FileResource(source);
 
         String filename = fileResource.getFilename();
-        assertTrue(filename.equals(expectedFileName));
+        assertTrue(filename.contains(expectedFileName));
     }
 
     @Test
@@ -34,10 +34,5 @@ public class FileResourceTest {
     @Test(expected = MalformedURLException.class)
     public void unsupportedProtocol() throws MalformedURLException {
         FileResource fileResource1 = new FileResource("vmfs://s3.ap-south-1.amazonaws.com");
-    }
-
-    @Test
-    public void test() {
-        System.out.print(UUID.randomUUID().toString());
     }
 }

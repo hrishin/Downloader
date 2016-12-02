@@ -29,7 +29,7 @@ public class DownloadService {
         this.sources = sources;
         this.downloadLocation = downloadLocation;
         this.downloadActivities = buildDownloadActivities(sources, downloadLocation);
-        this.executor = Executors.newCachedThreadPool();
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         this.completionService = new ExecutorCompletionService<DownloadActivity>(executor);
         this.activityFutures =  new ArrayList<Future<DownloadActivity>>();
     }
