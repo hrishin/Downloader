@@ -1,4 +1,4 @@
-package com.agoda.downloader.domain;
+package com.agoda.downloader.resources;
 
 import org.junit.Test;
 

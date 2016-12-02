@@ -1,4 +1,4 @@
-package com.agoda.downloader.domain;
+package com.agoda.downloader.resources;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.

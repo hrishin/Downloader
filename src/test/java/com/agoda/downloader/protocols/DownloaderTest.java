@@ -1,15 +1,13 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DownloadState;
-import com.agoda.downloader.domain.FileResource;
-import com.agoda.downloader.exception.DownloadException;
+import com.agoda.downloader.resources.FileResource;
+import com.agoda.downloader.exceptions.DownloadException;
 import com.agoda.downloader.DownloadSetup;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.agoda.downloader.domain.DownloadState.COMPLETED;
+import static com.agoda.downloader.protocols.DownloadState.COMPLETED;
 import static org.junit.Assert.assertEquals;
 
 /**

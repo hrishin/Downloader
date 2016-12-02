@@ -1,6 +1,4 @@
-package com.agoda.downloader.service;
-
-import com.agoda.downloader.domain.FileResource;
+package com.agoda.downloader.resources;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;

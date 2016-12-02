@@ -1,6 +1,5 @@
 package com.agoda.downloader.cliutil;
 
-import com.agoda.downloader.domain.CLIOptions;
 import org.apache.commons.cli.*;
 
 /**
@@ -44,7 +43,7 @@ public class CLIUtil {
 
     public static void help() {
         HelpFormatter formater = new HelpFormatter();
-        formater.printHelp("Sorting Help", options);
+        formater.printHelp("Download Help", options);
         System.exit(0);
 
     }

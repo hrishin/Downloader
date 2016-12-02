@@ -1,15 +1,14 @@
 package com.agoda.downloader.service;
 
 import com.agoda.downloader.DownloadSetup;
-import com.agoda.downloader.domain.FileResource;
-import com.agoda.downloader.protocols.Downloader;
+import com.agoda.downloader.resources.FileResource;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import static com.agoda.downloader.domain.DownloadState.COMPLETED;
+import static com.agoda.downloader.protocols.DownloadState.COMPLETED;
 import static org.junit.Assert.assertEquals;
 
 /**

@@ -1,7 +1,7 @@
-package com.agoda.downloader.service;
+package com.agoda.downloader.resources;
 
-import com.agoda.downloader.domain.FileResource;
-import com.agoda.downloader.service.FileResourceBuilder;
+import com.agoda.downloader.resources.FileResource;
+import com.agoda.downloader.resources.FileResourceBuilder;
 import org.junit.Test;
 
 import java.util.List;

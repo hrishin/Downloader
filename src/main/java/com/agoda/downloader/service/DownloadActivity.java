@@ -1,7 +1,7 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.domain.DownloadState;
-import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.protocols.DownloadState;
+import com.agoda.downloader.resources.FileResource;
 import com.agoda.downloader.protocols.Downloader;
 
 import java.util.concurrent.Callable;
@@ -28,19 +28,28 @@ public class DownloadActivity {
     }
 
     public Callable<DownloadActivity> getDownloadCall() {
-        DownloadActivity currentActvity;
-        Callable<DownloadActivity> downloadCallable = new Callable<DownloadActivity>() {
-            @Override
-            public DownloadActivity call() throws Exception {
-                downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
-                return DownloadActivity.this;
-            }
-        };
-
-        return downloadCallable;
+        return new DownloadTask();
     }
 
     public DownloadState getStatus() {
         return this.downloader.getStatus();
+    }
+
+    public String getFileName() {
+        return fileResource.getFilename();
+    }
+
+    class DownloadTask implements Callable<DownloadActivity> {
+        private DownloadActivity activity;
+
+        DownloadTask() {
+            activity = DownloadActivity.this;
+        }
+
+        @Override
+        public DownloadActivity call() throws Exception {
+            downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
+            return activity;
+        }
     }
 }

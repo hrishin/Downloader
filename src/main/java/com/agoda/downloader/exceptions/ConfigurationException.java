@@ -1,4 +1,4 @@
-package com.agoda.downloader.exception;
+package com.agoda.downloader.exceptions;
 
 /**
  * Created by hrishikeshshinde on 01/12/16.

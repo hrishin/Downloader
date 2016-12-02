@@ -1,12 +1,12 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DownloadState;
-import com.agoda.downloader.exception.DownloadException;
+import com.agoda.downloader.exceptions.DownloadException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -39,9 +39,10 @@ public class FtpDownloader implements Downloader {
             ftpClient = configuredFTPClient();
 
             FTPFile[] files = ftpClient.listFiles(this.filePath);
-            if(files.length <=  0) {
+            if(files.length <=  0 || files[0].getSize() <= 0) {
                 throw new IOException("File is empty, could not download it");
             } else {
+                LOGGER.log(Level.INFO, "File size : "+ files[0].getSize());
                 downloadFile(path, fileName, ftpClient);
             }
         } catch (IOException e) {
@@ -78,6 +79,7 @@ public class FtpDownloader implements Downloader {
     }
 
     private void downloadFile(String path, String fileName, FTPClient ftpClient) throws IOException {
+        LOGGER.log(Level.INFO, "FTP downloading : "+ fileName);
         File downloadFile = new File(path + fileName);
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile))) {
             boolean success = ftpClient.retrieveFile(this.filePath, outputStream);

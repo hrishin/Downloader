@@ -1,8 +1,8 @@
 package com.agoda.downloader;
 
 import com.agoda.downloader.cliutil.CLIUtil;
-import com.agoda.downloader.domain.CLIOptions;
-import com.agoda.downloader.exception.ConfigurationException;
+import com.agoda.downloader.cliutil.CLIOptions;
+import com.agoda.downloader.exceptions.ConfigurationException;
 import org.apache.commons.cli.ParseException;
 
 import java.io.File;
@@ -17,10 +17,18 @@ public class ConfigLoader {
 
     public ConfigLoader(String[] args) throws ParseException {
         CLIUtil.initOptions(args);
-        CLIUtil.checkIfNeedHelp();
+        if(args.length == 0 || hasValidInput()) {
+            CLIUtil.help();
+        }
+    }
+
+    private boolean hasValidInput() {
+        return CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_SOURCE_SS) == null ||
+                CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_LOCATION_SS) == null;
     }
 
     public String getDownloadLocation() throws ConfigurationException {
+        CLIUtil.checkIfNeedHelp();
         String downloadLocation = CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_LOCATION_SS);
         downloadLocation = downloadLocation.endsWith("/") ?
                         downloadLocation : downloadLocation+"/";

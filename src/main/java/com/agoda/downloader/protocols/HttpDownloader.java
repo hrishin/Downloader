@@ -1,7 +1,6 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.domain.DownloadState;
-import com.agoda.downloader.exception.DownloadException;
+import com.agoda.downloader.exceptions.DownloadException;
 
 import java.io.File;
 import java.io.FileOutputStream;

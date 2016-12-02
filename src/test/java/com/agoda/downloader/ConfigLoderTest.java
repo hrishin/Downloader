@@ -1,8 +1,7 @@
 package com.agoda.downloader;
 
-import com.agoda.downloader.exception.ConfigurationException;
+import com.agoda.downloader.exceptions.ConfigurationException;
 import org.apache.commons.cli.ParseException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

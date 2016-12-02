@@ -1,4 +1,4 @@
-package com.agoda.downloader.exception;
+package com.agoda.downloader.exceptions;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
