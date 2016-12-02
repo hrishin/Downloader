@@ -90,4 +90,7 @@ public class FileResource {
     public Downloader createDownloader() {
         return ProtocolFactory.getProtocol(protocol);
     }
+
+    public void delete() {
+    }
 }

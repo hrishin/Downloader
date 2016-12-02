@@ -1,5 +1,8 @@
 package com.agoda.downloader.exceptions;
 
+import org.apache.commons.io.FileDeleteStrategy;
+
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
@@ -43,7 +46,7 @@ public class DownloadException extends Exception {
 
     private void cleanUp(String filePath) {
         try {
-            Files.delete(Paths.get(filePath));
+            FileDeleteStrategy.FORCE.delete(new File(filePath));
             LOGGER.info("File cleaned : " + filePath);
         } catch (Exception e) {
             LOGGER.info("File cleaning failed :" + filePath);

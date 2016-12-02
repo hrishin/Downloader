@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 public class DownloadService {
     private final static Logger LOGGER = Logger.getLogger(DownloadService.class.getName());
 
-    private String sources;
-    private String downloadLocation;
-    private List<DownloadActivity> downloadActivities;
-    private CompletionService<DownloadActivity> completionService;
-    private List<Future<DownloadActivity>> activityFutures;
-    private ExecutorService executor;
+    private final String sources;
+    private final String downloadLocation;
+    private final List<DownloadActivity> downloadActivities;
+    private final CompletionService<DownloadActivity> completionService;
+    private final List<Future<DownloadActivity>> activityFutures;
+    private final ExecutorService executor;
 
     public DownloadService(String sources, String downloadLocation) {
         this.sources = sources;
@@ -51,12 +51,6 @@ public class DownloadService {
         this.executor.shutdown();
     }
 
-    public void getActivityStats() {
-        for (Future futureActivity: activityFutures) {
-            futureActivity.isDone();
-        }
-    }
-
     public DownloadActivity getUpdatedActivity() throws DownloadException {
         try {
             return completionService.take().get();
@@ -82,5 +76,10 @@ public class DownloadService {
             }
 
         }
+    }
+
+
+    public void cleanActivities() {
+        downloadActivities.stream().forEach(act -> act.clean());
     }
 }

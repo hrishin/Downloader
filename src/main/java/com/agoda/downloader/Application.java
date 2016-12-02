@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 public class Application {
 
 	private final static Logger LOGGER = Logger.getLogger(Application.class.getName());
+	private DownloadService downloadService;
+
 
 	public static void main(String[] args) {
 		ConfigLoader configLoader = null;
@@ -29,6 +31,12 @@ public class Application {
 		}
 
 		DownloadService downloadService = new DownloadService(sources,downloadLocation);
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				downloadService.cleanActivities();
+			}
+		});
 		downloadService.downloadAll();
 		downloadService.waitForCompletion();
 	}

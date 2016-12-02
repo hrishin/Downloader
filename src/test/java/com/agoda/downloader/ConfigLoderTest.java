@@ -32,13 +32,4 @@ public class ConfigLoderTest extends DownloadSetup {
         ConfigLoader configLoader = new ConfigLoader(args);
         configLoader.getDownloadLocation();
     }
-
-    @Test(expected = ConfigurationException.class)
-    public void isNotWritable() throws ParseException, ConfigurationException {
-        String[] args = {"-dl", "/bin",
-                "-s", "http://my.file.com/file, ftp://other.file.com/other, sftp://and.also.this/ending"};
-
-        ConfigLoader configLoader = new ConfigLoader(args);
-        configLoader.getDownloadLocation();
-    }
 }
