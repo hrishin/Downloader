@@ -17,7 +17,7 @@ public class DownloadActivity {
 
     public DownloadActivity(FileResource fileResource, String downloadPath) {
         this.fileResource = fileResource;
-        this.downloader = this.fileResource.getDownloader();
+        this.downloader = this.fileResource.createDownloader();
         this.downloadPath = downloadPath;
     }
 
@@ -27,15 +27,20 @@ public class DownloadActivity {
         this.downloadPath = downloadPath;
     }
 
-    public Callable<DownloadState> getCallable() {
-        Callable<DownloadState> downloadCallable = new Callable<DownloadState>() {
+    public Callable<DownloadActivity> getDownloadCall() {
+        DownloadActivity currentActvity;
+        Callable<DownloadActivity> downloadCallable = new Callable<DownloadActivity>() {
             @Override
-            public DownloadState call() throws Exception {
+            public DownloadActivity call() throws Exception {
                 downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
-                return downloader.getStatus();
+                return DownloadActivity.this;
             }
         };
 
         return downloadCallable;
+    }
+
+    public DownloadState getStatus() {
+        return this.downloader.getStatus();
     }
 }

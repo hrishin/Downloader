@@ -1,8 +1,8 @@
 package com.agoda.downloader.service;
 
 import com.agoda.downloader.DownloadSetup;
-import com.agoda.downloader.domain.DownloadState;
 import com.agoda.downloader.domain.FileResource;
+import com.agoda.downloader.protocols.Downloader;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -21,10 +21,10 @@ public class DownloadActivityTest extends DownloadSetup {
     public void callableHttpDownloadTask() throws MalformedURLException, ExecutionException, InterruptedException {
         FileResource fileResource = new FileResource(httpResource);
         DownloadActivity activity = new DownloadActivity(fileResource, downloadLocation);
-        FutureTask<DownloadState> downloadTask = new FutureTask<DownloadState>(activity.getCallable());
+        FutureTask<DownloadActivity> downloadTask = new FutureTask<DownloadActivity>(activity.getDownloadCall());
         new Thread(downloadTask).run();
 
-        assertEquals(COMPLETED, downloadTask.get());
+        assertEquals(COMPLETED, downloadTask.get().getStatus());
 
     }
 
@@ -32,10 +32,10 @@ public class DownloadActivityTest extends DownloadSetup {
     public void callableFtpDownloadTask() throws MalformedURLException, ExecutionException, InterruptedException {
         FileResource fileResource = new FileResource(ftpResource);
         DownloadActivity activity = new DownloadActivity(fileResource, downloadLocation);
-        FutureTask<DownloadState> downloadTask = new FutureTask<DownloadState>(activity.getCallable());
+        FutureTask<DownloadActivity> downloadTask = new FutureTask<DownloadActivity>(activity.getDownloadCall());
         new Thread(downloadTask).run();
 
-        assertEquals(COMPLETED, downloadTask.get());
+        assertEquals(COMPLETED, downloadTask.get().getStatus());
 
     }
 }

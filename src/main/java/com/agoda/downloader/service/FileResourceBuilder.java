@@ -22,7 +22,7 @@ public class FileResourceBuilder {
                     try {
                         return new FileResource(url.trim());
                     } catch (MalformedURLException e) {
-                        LOGGER.warning(url + " " + e.getMessage());
+                        LOGGER.warning("Invalid " +url + " : " + e.getMessage());
                         return null;
                     }
                 })

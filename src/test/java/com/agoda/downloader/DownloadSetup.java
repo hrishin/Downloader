@@ -13,10 +13,15 @@ public class DownloadSetup {
 
     @Before
     public void setup() {
-        downloadLocation = System.getenv("DOWNLOAD_LOCATION");
-        downloadLocation = downloadLocation.endsWith("/") ? downloadLocation : downloadLocation+"/";
-        httpResource = "https://s3.ap-south-1.amazonaws.com/hriships/HrishikeshShinde_resume.pdf";
-        ftpResource = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
+
+        try {
+            downloadLocation = System.getenv("DOWNLOAD_LOCATION");
+            downloadLocation = downloadLocation.endsWith("/") ? downloadLocation : downloadLocation+"/";
+            httpResource = "https://s3.ap-south-1.amazonaws.com/hriships/HrishikeshShinde_resume.pdf";
+            ftpResource = "ftp://anonymous:myemailname@ftp.hq.nasa.gov/pub/astrophysics/FTP_Instructions.txt";
+        } catch (NullPointerException e) {
+
+        }
     }
 
 }

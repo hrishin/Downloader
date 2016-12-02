@@ -5,8 +5,6 @@ package com.agoda.downloader.domain;
  */
 
 import com.agoda.downloader.protocols.Downloader;
-import com.agoda.downloader.protocols.FtpDownloader;
-import com.agoda.downloader.protocols.HttpDownloader;
 import com.agoda.downloader.protocols.ProtocolFactory;
 
 import java.net.MalformedURLException;
@@ -69,7 +67,7 @@ public class FileResource {
         return filename;
     }
 
-    public Downloader getDownloader() {
+    public Downloader createDownloader() {
         return ProtocolFactory.getProtocol(protocol);
     }
 }
