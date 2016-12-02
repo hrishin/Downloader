@@ -21,7 +21,7 @@ public class DownloadServiceTest extends DownloadSetup {
 
     @Test
     public void appTest1() throws ParseException, ConfigurationException {
-        String[] args = {"-dl", "/Users/hrishikeshshinde/downloadtest/",
+        String[] args = {"-dl", downloadLocation,
                         "-s", httpResource + "," + ftpResource};
         ConfigLoader configLoader = new ConfigLoader(args);
         DownloadService downloadService = new DownloadService(configLoader.getSources(),

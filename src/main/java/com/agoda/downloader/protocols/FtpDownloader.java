@@ -37,14 +37,8 @@ public class FtpDownloader implements Downloader {
         try {
             processSourceURL(source);
             ftpClient = configuredFTPClient();
-
-            FTPFile[] files = ftpClient.listFiles(this.filePath);
-            if(files.length <=  0 || files[0].getSize() <= 0) {
-                throw new IOException("File is empty, could not download it");
-            } else {
-                LOGGER.log(Level.INFO, "File size : "+ files[0].getSize());
-                downloadFile(path, fileName, ftpClient);
-            }
+            verifyFile(path, fileName, ftpClient);
+            downloadFile(path, fileName, ftpClient);
         } catch (IOException e) {
             this.downloadState = DownloadState.FAILED;
             throw new DownloadException(e, downloadFile);
@@ -53,6 +47,14 @@ public class FtpDownloader implements Downloader {
         }
 
         return this.downloadState;
+    }
+
+    private void verifyFile(String path, String fileName, FTPClient ftpClient) throws IOException {
+        FTPFile[] files = ftpClient.listFiles(this.filePath);
+        if(files.length <=  0 || files[0].getSize() <= 0) {
+            throw new IOException("File is empty, could not download it");
+        }
+        LOGGER.log(Level.INFO, "File size : "+ files[0].getSize());
     }
 
     private void cleanUP(FTPClient ftpClient) {
@@ -81,12 +83,27 @@ public class FtpDownloader implements Downloader {
     private void downloadFile(String path, String fileName, FTPClient ftpClient) throws IOException {
         LOGGER.log(Level.INFO, "FTP downloading : "+ fileName);
         File downloadFile = new File(path + fileName);
-        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile))) {
+        OutputStream outputStream = null;
+        try {
+            outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
             boolean success = ftpClient.retrieveFile(this.filePath, outputStream);
             if(success) {
                 this.downloadState = DownloadState.COMPLETED;
             } else {
                 throw new IOException("Failed to download the file");
+            }
+        } finally {
+            cleanUp(outputStream);
+        }
+    }
+
+    private void cleanUp(OutputStream outputStream) {
+        if(outputStream != null) {
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.WARNING, "FtpDownloader Stream close issue");
             }
         }
     }

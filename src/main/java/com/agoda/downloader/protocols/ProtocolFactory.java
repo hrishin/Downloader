@@ -6,13 +6,13 @@ package com.agoda.downloader.protocols;
 public class ProtocolFactory {
 
     public static Downloader getProtocol(String protocol) {
-        switch (protocol) {
-            case "http":
-            case "https":
+        switch (Protocol.valueOf(protocol.toUpperCase())) {
+            case HTTP:
+            case HTTPS:
                 return new HttpDownloader();
 
-            case "ftp":
-            case "sftp":
+            case FTP:
+            case SFTP:
                 return new FtpDownloader();
 
             default:

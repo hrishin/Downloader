@@ -9,11 +9,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by hrishikeshshinde on 01/12/16.
  */
-public class ConfigLoderTest {
+public class ConfigLoderTest extends DownloadSetup {
 
     @Test
     public void loadConfiguration() throws ParseException, ConfigurationException {
-        String[] args = {"-dl", "/Users/hrishikeshshinde/downloadtest/",
+        String[] args = {"-dl", downloadLocation,
                         "-s", "http://my.file.com/file, ftp://other.file.com/other, sftp://and.also.this/ending"};
 
         ConfigLoader configLoader = new ConfigLoader(args);
