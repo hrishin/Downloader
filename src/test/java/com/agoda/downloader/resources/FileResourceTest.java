@@ -24,6 +24,19 @@ public class FileResourceTest {
     }
 
     @Test
+    public void protocolSupport() throws MalformedURLException {
+        FileResource fileResource1 = new FileResource("https://s3.ap-south-1.amazonaws.com");
+        FileResource fileResource2 = new FileResource("http://s3.ap-south-1.amazonaws.com");
+        FileResource fileResource3 = new FileResource("ftp://s3.ap-south-1.amazonaws.com");
+        FileResource fileResource4 = new FileResource("sftp://s3.ap-south-1.amazonaws.com");
+    }
+
+    @Test(expected = MalformedURLException.class)
+    public void unsupportedProtocol() throws MalformedURLException {
+        FileResource fileResource1 = new FileResource("vmfs://s3.ap-south-1.amazonaws.com");
+    }
+
+    @Test
     public void test() {
         System.out.print(UUID.randomUUID().toString());
     }

@@ -31,6 +31,5 @@ public class Application {
 		DownloadService downloadService = new DownloadService(sources,downloadLocation);
 		downloadService.downloadAll();
 		downloadService.waitForCompletion();
-
 	}
 }

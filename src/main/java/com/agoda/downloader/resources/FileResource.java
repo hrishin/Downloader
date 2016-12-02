@@ -5,13 +5,14 @@ package com.agoda.downloader.resources;
  */
 
 import com.agoda.downloader.protocols.Downloader;
+import com.agoda.downloader.protocols.Protocol;
 import com.agoda.downloader.protocols.ProtocolFactory;
 
 import java.net.MalformedURLException;
 import java.util.UUID;
 
 /**
- * FileResource is Unified File Resource for the context of application which supports
+ * FileResource is File Resource for the context of application which supports
  * few other functionalities such as identify protocol and prepare file name for
  * given URL
  */
@@ -22,9 +23,18 @@ public class FileResource {
     private final String filename;
 
     public FileResource(String baseURL) throws MalformedURLException {
+        validate(baseURL);
         this.baseURL = baseURL;
         this.protocol = protocol();
         this.filename = fileName();
+    }
+
+    /**
+     * Validate the URL format
+     * @param baseURL
+     */
+    private void validate(String baseURL) {
+
     }
 
     private String fileName() {
@@ -33,17 +43,27 @@ public class FileResource {
                                                                     :fileName;
     }
 
+    /**
+     * Constructs the filename by given URL
+     * @param baseURL
+     * @return
+     */
     private String buildFileName(String baseURL) {
         return baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
     }
 
+    /**
+     * Extracts the protocol of resources to use for downloading the resource
+     * @return
+     * @throws MalformedURLException
+     */
     private String protocol() throws MalformedURLException {
         String protocol = this.baseURL.substring(0, this.baseURL.indexOf(":"));
-        if(protocol == null ) {
+        if(protocol == null || !Protocol.isSupported(protocol)) {
             throw new MalformedURLException("Invalid protocol");
         }
 
-        return protocol;
+        return protocol.toLowerCase();
     }
 
     public String getBaseURL() {
