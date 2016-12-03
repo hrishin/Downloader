@@ -1,17 +1,17 @@
 # Downloader Services
 
-This is CLI unitity to downlaod files from various sources type 
+This is CLI utility tool to download files from various sources type 
 
- * http
+  * http
   * https
-   * ftp
-    * sftp
+  * ftp
+  * sftp
 
 ### Build
 
 with test
 
-Note: test suit has 1 integration test which require access to file system. Please make sure the source code location
+Note: Test suit has 1 integration test which require access to file system. Please make sure the source code location
 has write file perimission 
 ```
 mvn clean test compile assembly:single
@@ -26,7 +26,7 @@ mvn clean compile assembly:single -Dmaven.test.skip=true
 ### Run
 
 ```
-java -jar downloader-0.0.1.jar -dl <download path> -s "<downlaod sources in CSV form>"
+java -jar downloader-0.0.1.jar -dl <download path> -s "<download sources in CSV form>"
 ```
 sample
 ```
@@ -45,11 +45,11 @@ java -jar downloader-0.0.1.jar -h
 ### Fetures
 1.Extensible to support different protocols
 
-2.Downlaod big files
+2.Download big files
 
 3.Auto cleanup of partial data in the final location in any case.
 
-4.Print downlaod progress and status
+4.Print download progress and status
 
 5.Retrive completed task one by one 
 
