@@ -10,6 +10,7 @@ import com.agoda.downloader.protocols.ProtocolFactory;
 
 import java.net.MalformedURLException;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * FileResource is File Resource for the context of application which supports
@@ -23,20 +24,10 @@ public class FileResource {
     private final String filename;
 
     public FileResource(String baseURL) throws MalformedURLException {
-        validate(baseURL);
         this.baseURL = baseURL;
         this.protocol = extractProtocol();
         this.filename = generateFileName();
     }
-
-    /**
-     * Validate the URL format
-     * @param baseURL
-     */
-    private void validate(String baseURL) {
-
-    }
-
 
     /**
      * Extracts the extractProtocol of resources to use for downloading the resource
@@ -44,12 +35,20 @@ public class FileResource {
      * @throws MalformedURLException
      */
     private String extractProtocol() throws MalformedURLException {
-        String protocol = this.baseURL.substring(0, this.baseURL.indexOf(":"));
+        String protocol = extractProtocolString();
         if(protocol == null || !Protocol.isSupported(protocol)) {
-            throw new MalformedURLException("Invalid extractProtocol");
+            throw new MalformedURLException("Invalid protocol or no protocol support for URL : " + baseURL);
         }
 
         return protocol.toLowerCase();
+    }
+
+    private String extractProtocolString() {
+        try {
+            return this.baseURL.substring(0, this.baseURL.indexOf(":"));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private String generateFileName() {
