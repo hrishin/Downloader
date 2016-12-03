@@ -66,7 +66,7 @@ public class FileResource {
     }
 
     private String getUniqueFileName(String fileName) {
-        return baseURL.hashCode()+"_"+fileName;
+        return Math.abs(baseURL.hashCode())+"_"+fileName;
     }
 
     private boolean fileNameIsNull(String fileName) {

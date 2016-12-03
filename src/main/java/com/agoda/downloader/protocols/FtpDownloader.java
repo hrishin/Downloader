@@ -4,6 +4,7 @@ import com.agoda.downloader.exceptions.DownloadException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.io.CopyStreamAdapter;
 
 import java.io.*;
 import java.util.logging.Level;
@@ -24,6 +25,7 @@ public class FtpDownloader implements Downloader {
     private String userName;
     private String password;
     private volatile DownloadState downloadState;
+    private long fileSize;
 
     public FtpDownloader() {
         this.downloadState = DownloadState.INITIAL;
@@ -51,10 +53,12 @@ public class FtpDownloader implements Downloader {
 
     private void verifyFile(String path, String fileName, FTPClient ftpClient) throws IOException {
         FTPFile[] files = ftpClient.listFiles(this.filePath);
-        if(files.length <=  0 || files[0].getSize() <= 0) {
+        this.fileSize = files[0].getSize();
+        if(files.length <=  0 || this.fileSize <= 0) {
             throw new IOException("File is empty, could not download it");
         }
-        LOGGER.log(Level.INFO, "File size : "+ files[0].getSize());
+        LOGGER.info("File size :" + FileUtil.inKB(fileSize) + " bytes");
+        LOGGER.info("File size :" + FileUtil.inMB(fileSize)+ " MB");
     }
 
     private void cleanUP(FTPClient ftpClient) {
@@ -71,7 +75,22 @@ public class FtpDownloader implements Downloader {
         ftpClient.enterLocalPassiveMode();
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
         confgFTPCredentials(ftpClient);
+        configureDownloadListener(ftpClient);
         return ftpClient;
+    }
+
+    private void configureDownloadListener(FTPClient ftpClient) {
+        CopyStreamAdapter streamListener = new CopyStreamAdapter() {
+            @Override
+            public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
+                int percent = FileUtil.calculateProgress(totalBytesTransferred, fileSize);
+                percent = percent > 100 ? 100 : percent;
+                LOGGER.info("Download Status :" + filePath +" "+percent+"%");
+            }
+
+        };
+        ftpClient.setCopyStreamListener(streamListener);
+
     }
 
     private void confgFTPCredentials(FTPClient ftpClient) throws IOException {
@@ -85,7 +104,7 @@ public class FtpDownloader implements Downloader {
         File downloadFile = new File(path + fileName);
         OutputStream outputStream = null;
         try {
-            outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
+            outputStream = new FileOutputStream(downloadFile);
             boolean success = ftpClient.retrieveFile(this.filePath, outputStream);
             if(success) {
                 this.downloadState = DownloadState.COMPLETED;

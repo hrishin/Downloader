@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.util.logging.Logger;
 
 /**
@@ -19,56 +16,92 @@ import java.util.logging.Logger;
 public class HttpDownloader implements Downloader {
     private final static Logger LOGGER = Logger.getLogger(HttpDownloader.class.getName());
 
+    private String filePath;
+    private long fileSize;
+    private int lastProgress;
     private volatile DownloadState downloadState;
 
     public HttpDownloader() {
         downloadState = DownloadState.INITIAL;
+        lastProgress = -1;
     }
 
     @Override
     public DownloadState download(String source, String path, String fileName) throws DownloadException {
-        this.downloadState = DownloadState.INPROGRESS;
-        String downloadFile = path + fileName;
         InputStream downloadStream = null;
-        FileOutputStream fos = null;
-
+        FileOutputStream fileOPStream = null;
+        downloadState = DownloadState.INPROGRESS;
+        filePath = path + fileName;
 
         try {
-            URL sourceUrl = new URL(source);
-            HttpURLConnection connection = (HttpURLConnection) sourceUrl.openConnection();
-            long fileSize = connection.getContentLengthLong();
-            LOGGER.info("File size :" + fileSize + " bytes");
-            LOGGER.info("File size :" + inMB(fileSize) + " MB");
-
-            if(fileSize <= 0) {
-                throw new IOException("File is empty, could not download it");
-            }
+            HttpURLConnection connection = configureStreams(source);
+            verifyFile(connection);
 
             downloadStream = connection.getInputStream();
-            ReadableByteChannel readChannel = Channels.newChannel(downloadStream);
-
-            File outputFile = new File(downloadFile);
-            fos = new FileOutputStream(outputFile);
-            FileChannel writeChannel = fos.getChannel();
-
-            long bytesTransferred = writeChannel.transferFrom(readChannel, 0, fileSize);
-
-            fos.close();
-
-            if(bytesTransferred != fileSize) {
-                throw new IOException("Failed to download the file");
-            } else {
-                this.downloadState = DownloadState.COMPLETED;
-            }
+            File outputFile = new File(filePath);
+            fileOPStream = new FileOutputStream(outputFile);
+            downloadFile(downloadStream, fileOPStream);
 
         } catch (IOException e) {
             this.downloadState = DownloadState.FAILED;
-            throw new DownloadException(e, downloadFile);
+            throw new DownloadException(e, filePath);
         } finally {
-            cleanUpStreams(downloadStream, fos);
+            cleanUpStreams(downloadStream, fileOPStream);
         }
 
         return this.downloadState;
+    }
+
+    private void downloadFile(InputStream downloadStream, FileOutputStream fileOPStream) throws IOException {
+        byte[] buf=new byte[8192];
+        int bytesRead = 0, bytesBuffered = 0;
+        long bytesTransferred = 0;
+        while((bytesRead = downloadStream.read(buf)) > -1 ) {
+            fileOPStream.write(buf, 0, bytesRead);
+            bytesBuffered += bytesRead;
+            bytesBuffered = flushAccumulatedBuffer(fileOPStream, bytesBuffered);
+            bytesTransferred += bytesRead;
+            calculateProgress(bytesTransferred);
+        }
+
+        fileOPStream.flush();
+
+        if(bytesTransferred != fileSize) {
+            throw new IOException("Failed to download the file");
+        } else {
+            this.downloadState = DownloadState.COMPLETED;
+        }
+    }
+
+    private void calculateProgress(long bytesTransferred) {
+        int progress = FileUtil.calculateProgress(bytesTransferred, fileSize);
+        if(progress != lastProgress) {
+            LOGGER.info("Download Status : " + filePath +" "+ progress +"%");
+            lastProgress = progress;
+        }
+    }
+
+    private int flushAccumulatedBuffer(FileOutputStream fileOPStream, int bytesBuffered) throws IOException {
+        if (bytesBuffered > 1024 * 1024) {
+            bytesBuffered = 0;
+            fileOPStream.flush();
+        }
+        return bytesBuffered;
+    }
+
+    private void verifyFile(HttpURLConnection connection) throws IOException {
+        fileSize = connection.getContentLengthLong();
+        LOGGER.info("File size :" + FileUtil.inKB(fileSize) + " bytes");
+        LOGGER.info("File size :" + FileUtil.inMB(fileSize)+ " MB");
+
+        if(fileSize <= 0) {
+            throw new IOException("File is empty, could not download it");
+        }
+    }
+
+    private HttpURLConnection configureStreams(String source) throws IOException {
+        URL sourceUrl = new URL(source);
+        return (HttpURLConnection) sourceUrl.openConnection();
     }
 
     private void cleanUpStreams(InputStream downloadStream, FileOutputStream fos) {
