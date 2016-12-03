@@ -31,6 +31,20 @@ public class FtpDownloader implements Downloader {
         this.downloadState = DownloadState.INITIAL;
     }
 
+    /**
+     * Download the requested resources using FTP protocol and save te file
+     * on given path.
+     * It also prints the progress of download process and update the download states
+     *
+     * Note: IF FTP resources is protected by username and password, make sure to pass the url using proper
+     * URL semantics
+     *
+     * @param source
+     * @param path
+     * @param fileName
+     * @return
+     * @throws DownloadException
+     */
     @Override
     public DownloadState download(String source, String path, String fileName) throws DownloadException {
         String downloadFile = path + fileName;

@@ -7,6 +7,12 @@ import org.apache.commons.cli.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *  Boots the application
+ *  parse cli options using {@code {@link ConfigLoader}}
+ *  schedules down sources using {@code {@link DownloadService}}
+ *  Wait till all resources get processed
+ */
 public class Application {
 
 	private final static Logger LOGGER = Logger.getLogger(Application.class.getName());

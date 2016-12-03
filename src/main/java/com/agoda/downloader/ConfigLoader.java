@@ -12,9 +12,19 @@ import java.nio.file.Paths;
 
 /**
  * Created by hrishikeshshinde on 01/12/16.
+ *
+ * Loads the configuration for applications such as download location, input sources
+ * as command line arguments
  */
 public class ConfigLoader {
 
+    /**
+     * Initialize the command line options
+     * Prompt for help if no commandline arguments has passed to program
+     *
+     * @param args
+     * @throws ParseException
+     */
     public ConfigLoader(String[] args) throws ParseException {
         CLIUtil.initOptions(args);
         if(args.length == 0 || hasValidInput()) {
@@ -27,6 +37,13 @@ public class ConfigLoader {
                 CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_LOCATION_SS) == null;
     }
 
+    /**
+     * Retrieves the download location for application and validate it as well by
+     * checking file permissions, is it directory
+     *
+     * @return
+     * @throws ConfigurationException
+     */
     public String getDownloadLocation() throws ConfigurationException {
         CLIUtil.checkIfNeedHelp();
         String downloadLocation = CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_LOCATION_SS);
@@ -54,6 +71,12 @@ public class ConfigLoader {
         return !Files.isDirectory(path) || !Files.isWritable(path);
     }
 
+    /**
+     * Retrieves resources CSV string passed to application
+     * This string represent resources to download
+     *
+     * @return
+     */
     public String getSources() {
         return  CLIUtil.getOptionValue(CLIOptions.DOWNLOAD_SOURCE_SS);
     }

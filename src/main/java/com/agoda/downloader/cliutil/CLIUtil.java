@@ -10,6 +10,12 @@ public class CLIUtil {
     private static CommandLine commandLine;
     private static Options options;
 
+    /**
+     * Build the command line options for the applciation
+     *
+     * @param args
+     * @throws ParseException
+     */
     public static void initOptions(String[] args) throws ParseException {
         Option firstNDataOption = new Option(CLIOptions.DOWNLOAD_LOCATION_SS.toString(), CLIOptions.DOWNLOAD_LOCATION_LS.toString(),
                                             true, "Local download path");
@@ -27,6 +33,12 @@ public class CLIUtil {
 
     }
 
+    /**
+     *Get the value of option passed as command line argument
+     *
+     * @param switchName
+     * @return
+     */
     public static String getOptionValue(CLIOptions switchName) {
         if (commandLine.hasOption(switchName.toString())) {
             return commandLine.getOptionValue(switchName.toString());
@@ -35,12 +47,20 @@ public class CLIUtil {
         }
     }
 
+    /**
+     * Prompts for help option if passed as commandline argument
+     *
+     */
     public static void checkIfNeedHelp() {
         if(commandLine.hasOption(CLIOptions.HELP_SS.toString())) {
             help();
         }
     }
 
+    /**
+     * Print help banner with all available options on commandline interface
+     *
+     */
     public static void help() {
         HelpFormatter formater = new HelpFormatter();
         formater.printHelp("Download Help", options);

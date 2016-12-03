@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 /**
  * Created by hrishikeshshinde on 29/11/16.
+ *
+ * Downloads the resources using HTTP protocol semantics
  */
 public class HttpDownloader implements Downloader {
     private final static Logger LOGGER = Logger.getLogger(HttpDownloader.class.getName());
@@ -26,6 +28,17 @@ public class HttpDownloader implements Downloader {
         lastProgress = -1;
     }
 
+    /**
+     * Download the requested resources using HTTP protocol and save te file
+     * on given path
+     * It also prints the progress of download process and update the download states
+     *
+     * @param source
+     * @param path
+     * @param fileName
+     * @return
+     * @throws DownloadException
+     */
     @Override
     public DownloadState download(String source, String path, String fileName) throws DownloadException {
         InputStream downloadStream = null;
@@ -40,6 +53,7 @@ public class HttpDownloader implements Downloader {
             downloadStream = connection.getInputStream();
             File outputFile = new File(filePath);
             fileOPStream = new FileOutputStream(outputFile);
+
             downloadFile(downloadStream, fileOPStream);
 
         } catch (IOException e) {
@@ -138,6 +152,11 @@ public class HttpDownloader implements Downloader {
         return fileSize/1024;
     }
 
+    /**
+     * Gives current state of download process
+     *
+     * @return
+     */
     @Override
     public DownloadState getStatus() {
         return this.downloadState;

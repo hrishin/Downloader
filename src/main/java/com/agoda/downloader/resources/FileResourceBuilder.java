@@ -13,6 +13,13 @@ public class FileResourceBuilder {
 
     private static final Logger LOGGER = Logger.getLogger(FileResourceBuilder.class.getName());
 
+    /**
+     * Build the list of {@code {@link FileResource}}
+     * by parsing CSV of download resource string
+     *
+     * @param sources
+     * @return
+     */
     public List<FileResource> resourcesFromCSV(final String sources) {
         return Arrays.asList(sources.split(","))
                 .stream()

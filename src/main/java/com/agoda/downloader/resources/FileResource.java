@@ -72,6 +72,11 @@ public class FileResource {
         return fileName == null || fileName.trim().length() == 0;
     }
 
+    /**
+     * Gives origin URL of download resource
+     *
+     * @return
+     */
     public String getBaseURL() {
         return baseURL;
     }
@@ -85,14 +90,29 @@ public class FileResource {
                 '}';
     }
 
+    /**
+     * Gives {@code {@link Protocol}} to used for download resource
+     *
+     * @return
+     */
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * gives file name of download resource
+     * @return
+     */
     public String getFilename() {
         return filename;
     }
 
+    /**
+     * Create correct instance of {@code {@link Downloader}}
+     * based on protocol used for resource using {@code {@link ProtocolFactory}}
+     *
+     * @return
+     */
     public Downloader createDownloader() {
         return ProtocolFactory.getProtocol(protocol);
     }

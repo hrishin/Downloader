@@ -14,6 +14,10 @@ import java.util.logging.Logger;
 
 /**
  * Created by hrishikeshshinde on 01/12/16.
+ *
+ * Objective of the class is to manage operations and states of individual download activity in application.
+ * To manage downloading aspects it uses {@code {@link FileResource}} and {@code {@link Downloader}} objects.
+ * It could allow to add new features like pause pause/resume download
  */
 
 public class DownloadActivity {
@@ -35,18 +39,34 @@ public class DownloadActivity {
         this.downloadPath = downloadPath;
     }
 
+    /**
+     * Returns {@code {@link Callable}} instances of {@code {@link DownloadTask}}
+     * @return
+     */
     public Callable<DownloadActivity> getDownloadCall() {
         return new DownloadTask();
     }
 
+    /**
+     * Gives current state of downloading activity as {@code {@link DownloadState}}
+     * using {@code {@link Downloader}}
+     * @return
+     */
     public DownloadState getStatus() {
         return this.downloader.getStatus();
     }
 
+    /**
+     * Get the filename of resource to download
+     * @return
+     */
     public String getFileName() {
         return fileResource.getFilename();
     }
 
+    /**
+     * It removes the file from disk it activity state is incomplete or partial
+     */
     public void clean() {
         if(!downloader.getStatus().equals(DownloadState.COMPLETED)) {
             String filePath = downloadPath + fileResource.getFilename();
@@ -58,6 +78,10 @@ public class DownloadActivity {
         }
     }
 
+    /**
+     * Creates new Callable DownloadTask and override call method to start
+     * resources downloading using {@code {@link Downloader}} instance
+     */
     class DownloadTask implements Callable<DownloadActivity> {
         private DownloadActivity activity;
 
