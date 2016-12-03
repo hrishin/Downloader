@@ -4,11 +4,13 @@ import com.agoda.downloader.resources.FileResource;
 import com.agoda.downloader.exceptions.DownloadException;
 import com.agoda.downloader.DownloadSetup;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 
 import static com.agoda.downloader.protocols.DownloadState.COMPLETED;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.
@@ -21,7 +23,9 @@ public class DownloaderTest extends DownloadSetup {
         String source = fileResource.getBaseURL();
         String fileName = fileResource.getFilename();
 
-        Downloader downloader = new HttpDownloader();
+        Downloader downloader = Mockito.mock(HttpDownloader.class);
+        when(downloader.download(source,downloadLocation,fileName)).thenReturn(DownloadState.COMPLETED);
+
         DownloadState status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
     }
@@ -43,7 +47,9 @@ public class DownloaderTest extends DownloadSetup {
         String source = fileResource.getBaseURL();
         String fileName = fileResource.getFilename();
 
-        Downloader downloader = new FtpDownloader();
+        Downloader downloader = Mockito.mock(FtpDownloader.class);
+        when(downloader.download(source,downloadLocation,fileName)).thenReturn(DownloadState.COMPLETED);
+
         DownloadState status = downloader.download(source, downloadLocation, fileName);
         assertEquals(COMPLETED, status);
     }
