@@ -2,13 +2,10 @@ package com.agoda.downloader.service;
 
 import com.agoda.downloader.DownloadSetup;
 import com.agoda.downloader.exceptions.DownloadException;
-import com.agoda.downloader.protocols.DownloadState;
-import com.agoda.downloader.protocols.Downloader;
 import com.agoda.downloader.protocols.FtpDownloader;
 import com.agoda.downloader.protocols.HttpDownloader;
 import com.agoda.downloader.resources.FileResource;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.net.MalformedURLException;

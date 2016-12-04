@@ -10,7 +10,6 @@ import com.agoda.downloader.protocols.ProtocolFactory;
 
 import java.net.MalformedURLException;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * FileResource is File Resource for the context of application which supports

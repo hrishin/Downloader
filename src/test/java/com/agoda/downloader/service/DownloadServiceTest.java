@@ -2,9 +2,9 @@ package com.agoda.downloader.service;
 
 import com.agoda.downloader.ConfigLoader;
 import com.agoda.downloader.DownloadSetup;
-import com.agoda.downloader.protocols.DownloadState;
 import com.agoda.downloader.exceptions.ConfigurationException;
 import com.agoda.downloader.exceptions.DownloadException;
+import com.agoda.downloader.protocols.DownloadState;
 import org.apache.commons.cli.ParseException;
 import org.junit.Assert;
 import org.junit.Test;

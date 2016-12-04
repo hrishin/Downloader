@@ -1,7 +1,7 @@
 package com.agoda.downloader;
 
-import com.agoda.downloader.cliutil.CLIUtil;
 import com.agoda.downloader.cliutil.CLIOptions;
+import com.agoda.downloader.cliutil.CLIUtil;
 import com.agoda.downloader.exceptions.ConfigurationException;
 import org.apache.commons.cli.ParseException;
 

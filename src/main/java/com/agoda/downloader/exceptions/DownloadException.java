@@ -3,8 +3,6 @@ package com.agoda.downloader.exceptions;
 import org.apache.commons.io.FileDeleteStrategy;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 /**

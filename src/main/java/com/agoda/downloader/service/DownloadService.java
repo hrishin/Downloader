@@ -1,8 +1,7 @@
 package com.agoda.downloader.service;
 
-import com.agoda.downloader.Application;
-import com.agoda.downloader.resources.FileResource;
 import com.agoda.downloader.exceptions.DownloadException;
+import com.agoda.downloader.resources.FileResource;
 import com.agoda.downloader.resources.FileResourceBuilder;
 
 import java.util.ArrayList;

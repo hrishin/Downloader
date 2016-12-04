@@ -1,8 +1,8 @@
 package com.agoda.downloader.protocols;
 
-import com.agoda.downloader.resources.FileResource;
-import com.agoda.downloader.exceptions.DownloadException;
 import com.agoda.downloader.DownloadSetup;
+import com.agoda.downloader.exceptions.DownloadException;
+import com.agoda.downloader.resources.FileResource;
 import org.junit.Test;
 import org.mockito.Mockito;
 

@@ -3,7 +3,6 @@ package com.agoda.downloader.resources;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
-import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 

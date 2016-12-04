@@ -1,15 +1,11 @@
 package com.agoda.downloader.resources;
 
 import com.agoda.downloader.DownloadSetup;
-import com.agoda.downloader.protocols.Protocol;
-import com.agoda.downloader.resources.FileResource;
-import com.agoda.downloader.resources.FileResourceBuilder;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hrishikeshshinde on 27/11/16.
