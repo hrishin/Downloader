@@ -20,9 +20,6 @@ with test
 ```
 mvn clean compile test assembly:single
 ```
-Note: Test suit has 1 integration test which require access to file system. Please make sure the source code location
-has write file perimission 
-
 
 without test
 ```
