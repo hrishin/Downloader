@@ -1,7 +1,7 @@
 package com.agoda.downloader.protocols;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
+ * Factory to build download protocol implementation
  */
 public class ProtocolFactory {
 

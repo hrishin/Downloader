@@ -11,8 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
- *
  * Loads the configuration for applications such as download location, input sources
  * as command line arguments
  */

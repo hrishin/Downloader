@@ -1,7 +1,7 @@
 package com.agoda.downloader.protocols;
 
 /**
- * Created by hrishikeshshinde on 03/12/16.
+ * File sizing utility functions
  */
 public class FileUtil {
 

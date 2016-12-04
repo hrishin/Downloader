@@ -3,7 +3,7 @@ package com.agoda.downloader.cliutil;
 import org.apache.commons.cli.*;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
+ * Utility class to initialize, extract CLI options
  */
 public class CLIUtil {
     private static CommandLineParser parser;

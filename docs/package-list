@@ -1,0 +1,6 @@
+com.agoda.downloader
+com.agoda.downloader.cliutil
+com.agoda.downloader.exceptions
+com.agoda.downloader.protocols
+com.agoda.downloader.resources
+com.agoda.downloader.service

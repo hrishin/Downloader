@@ -11,8 +11,6 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 /**
- * Created by hrishikeshshinde on 29/11/16.
- *
  * Downloads the resources using HTTP protocol semantics
  */
 public class HttpDownloader implements Downloader {

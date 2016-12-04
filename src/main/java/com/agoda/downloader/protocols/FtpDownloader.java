@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by hrishikeshshinde on 30/11/16.
+ * Downloads the resources using FTP protocol semantics
  */
 public class FtpDownloader implements Downloader {
 

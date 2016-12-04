@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
- *
  * Is service component of application which manage all {@code {@link DownloadActivity}}.
  * It schedules all download request concurrently using thread pool
  *

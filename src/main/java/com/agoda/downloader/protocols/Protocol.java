@@ -1,7 +1,7 @@
 package com.agoda.downloader.protocols;
 
 /**
- * Created by hrishikesh_shinde on 12/2/2016.
+ * Supported protocol list
  */
 public enum Protocol {
     HTTP("http"),

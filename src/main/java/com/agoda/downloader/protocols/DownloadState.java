@@ -1,7 +1,7 @@
 package com.agoda.downloader.protocols;
 
 /**
- * Created by hrishikeshshinde on 30/11/16.
+ * Download states
  */
 public enum DownloadState {
     INITIAL,

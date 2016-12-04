@@ -12,8 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
- *
  * Objective of the class is to manage operations and states of individual download activity in application.
  * To manage downloading aspects it uses {@code {@link FileResource}} and {@code {@link Downloader}} objects.
  * It could allow to add new features like pause pause/resume download

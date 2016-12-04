@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Created by hrishikeshshinde on 27/11/16.
+ * Builds FileResource entities from CSV string
  */
 public class FileResourceBuilder {
 

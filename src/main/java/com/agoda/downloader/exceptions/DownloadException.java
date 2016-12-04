@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 /**
- * Created by hrishikeshshinde on 30/11/16.
+ *
  */
 public class DownloadException extends Exception {
     private final static Logger LOGGER = Logger.getLogger(DownloadException.class.getName());

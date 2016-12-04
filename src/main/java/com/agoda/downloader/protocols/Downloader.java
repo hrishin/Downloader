@@ -3,7 +3,7 @@ package com.agoda.downloader.protocols;
 import com.agoda.downloader.exceptions.DownloadException;
 
 /**
- * Created by hrishikeshshinde on 29/11/16.
+ * Download interface to abstract the download behaviour
  */
 public interface Downloader {
 

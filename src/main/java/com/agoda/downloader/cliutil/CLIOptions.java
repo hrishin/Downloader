@@ -1,7 +1,7 @@
 package com.agoda.downloader.cliutil;
 
 /**
- * Created by hrishikeshshinde on 01/12/16.
+ * CLI Options for application
  */
 public enum CLIOptions {
     DOWNLOAD_LOCATION_SS("dl"),
