@@ -56,5 +56,5 @@ java -jar downloader-0.0.1.jar -h
 
 4.Print download progress and status
 
-5.Retrive completed task one by one 
+5.Concurent downloads and pop completed task one by one rather waiting for all task to finish
 
