@@ -83,15 +83,15 @@ public class FtpDownloader implements Downloader {
         if(files.length <=  0 || this.fileSize <= 0) {
             throw new IOException(EMPTY_FILE_ERR_MSG);
         }
-        LOGGER.info(FILE_SIZE + FileUtil.inKB(fileSize) + " Bytes");
-        LOGGER.info(FILE_SIZE + FileUtil.inMB(fileSize)+ " MB");
+        LOGGER.log(Level.INFO,FILE_SIZE + FileUtil.inKB(fileSize) + " Bytes");
+        LOGGER.log(Level.INFO,FILE_SIZE + FileUtil.inMB(fileSize)+ " MB");
     }
 
     private void cleanUP(FTPClient ftpClient) {
         try {
             ftpClient.disconnect();
         } catch (IOException | NullPointerException e) {
-            LOGGER.warning(FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
+            LOGGER.log(Level.INFO, FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
         }
     }
 
@@ -111,7 +111,7 @@ public class FtpDownloader implements Downloader {
             public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
                 int percent = FileUtil.calculateProgress(totalBytesTransferred, fileSize);
                 percent = percent > 100 ? 100 : percent;
-                LOGGER.info(DOWNLOAD_STATUS_MSG + filePath +" "+percent+"%");
+                LOGGER.log(Level.INFO,DOWNLOAD_STATUS_MSG + filePath +" "+percent+"%");
             }
 
         };
