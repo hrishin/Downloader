@@ -77,12 +77,11 @@ public class DownloadService {
     }
 
     /**
-     *  Get all {@code {@link DownloadActivity}}
-     *
+     *  Get all {@code {@link DownloadActivity}} that represent Future task
      * @return
      */
     public List<DownloadActivity> getDownloadActivities() {
-        return downloadActivities;
+        return downloadActivities.stream().collect(Collectors.toList());
     }
 
     /**
@@ -98,7 +97,6 @@ public class DownloadService {
             } catch (DownloadException e) {
                 LOGGER.log(Level.INFO, "Download Failed : " + e.getFilePath());
             }
-
         }
     }
 

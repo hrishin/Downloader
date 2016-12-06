@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 public class Application {
 
 	private final static Logger LOGGER = Logger.getLogger(Application.class.getName());
-	private DownloadService downloadService;
-
+	public static final String ILLEGAL_ARGUMENTS = "Illegal arguments : ";
+	public static final String INVALID_CONFIGURATION = "Invalid configuration :";
 
 	public static void main(String[] args) {
 		ConfigLoader configLoader = null;
@@ -29,14 +29,14 @@ public class Application {
 			sources = configLoader.getSources();
 			downloadLocation = configLoader.getDownloadLocation();
 		} catch (ParseException e) {
-			LOGGER.log(Level.SEVERE, "Illegal arguments : " + e.getMessage());
+			LOGGER.log(Level.SEVERE, ILLEGAL_ARGUMENTS + e.getMessage());
 			System.exit(0);
 		} catch (ConfigurationException e) {
-			LOGGER.log(Level.SEVERE, "Invalid configuration :" + e.getMessage());
+			LOGGER.log(Level.SEVERE, INVALID_CONFIGURATION + e.getMessage());
 			System.exit(0);
 		}
 
-		DownloadService downloadService = new DownloadService(sources,downloadLocation);
+		DownloadService downloadService = new DownloadService(sources, downloadLocation);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
