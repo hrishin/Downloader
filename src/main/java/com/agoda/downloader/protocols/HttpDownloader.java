@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +16,12 @@ import java.util.logging.Logger;
  */
 public class HttpDownloader implements Downloader {
     private final static Logger LOGGER = Logger.getLogger(HttpDownloader.class.getName());
+    public static final String DOWNLOAD_FAILED_ERR_MSG = "Failed to download the file";
+    public static final String DOWNLOAD_STATUS = "Download Status : ";
+    public static final int ONE_MB = 1024 * 1024;
+    public static final String FILE_SIZE = "File size :";
+    public static final String EMPTY_FILE_ERR_MSG = "File is empty, could not download it";
+    private final String HTTP_STREAM_ISSUE = "HttpDownloader Stream close issue";
 
     private String filePath;
     private long fileSize;
@@ -79,7 +86,7 @@ public class HttpDownloader implements Downloader {
         fileOPStream.flush();
 
         if(bytesTransferred != fileSize) {
-            throw new IOException("Failed to download the file");
+            throw new IOException(DOWNLOAD_FAILED_ERR_MSG);
         } else {
             this.downloadState = DownloadState.COMPLETED;
         }
@@ -88,13 +95,13 @@ public class HttpDownloader implements Downloader {
     private void calculateProgress(long bytesTransferred) {
         int progress = FileUtil.calculateProgress(bytesTransferred, fileSize);
         if(progress != lastProgress) {
-            LOGGER.info("Download Status : " + filePath +" "+ progress +"%");
+            LOGGER.log(Level.INFO, DOWNLOAD_STATUS + filePath +" "+ progress +"%");
             lastProgress = progress;
         }
     }
 
     private int flushAccumulatedBuffer(FileOutputStream fileOPStream, int bytesBuffered) throws IOException {
-        if (bytesBuffered > 1024 * 1024) {
+        if (bytesBuffered > ONE_MB) {
             bytesBuffered = 0;
             fileOPStream.flush();
         }
@@ -103,11 +110,11 @@ public class HttpDownloader implements Downloader {
 
     private void verifyFile(HttpURLConnection connection) throws IOException {
         fileSize = connection.getContentLengthLong();
-        LOGGER.info("File size :" + FileUtil.inKB(fileSize) + " bytes");
-        LOGGER.info("File size :" + FileUtil.inMB(fileSize)+ " MB");
+        LOGGER.log(Level.INFO, FILE_SIZE + FileUtil.inKB(fileSize) + " Bytes");
+        LOGGER.log(Level.INFO, FILE_SIZE + FileUtil.inMB(fileSize)+ " MB");
 
         if(fileSize <= 0) {
-            throw new IOException("File is empty, could not download it");
+            throw new IOException(EMPTY_FILE_ERR_MSG);
         }
     }
 
@@ -126,7 +133,7 @@ public class HttpDownloader implements Downloader {
             try {
                 downloadStream.close();
             } catch (IOException e) {
-                LOGGER.warning("HttpDownloader Stream close issue");
+                LOGGER.log(Level.WARNING, HTTP_STREAM_ISSUE);
             }
         }
     }
@@ -137,17 +144,9 @@ public class HttpDownloader implements Downloader {
                 fos.flush();
                 fos.close();
             } catch (IOException e) {
-                LOGGER.warning("HttpDownloader Stream close issue");
+                LOGGER.log(Level.WARNING, HTTP_STREAM_ISSUE);
             }
         }
-    }
-
-    private long inMB(long fileSize) {
-        return inKB(fileSize) / 1024;
-    }
-
-    private long inKB(long fileSize) {
-        return fileSize/1024;
     }
 
     /**

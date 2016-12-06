@@ -91,7 +91,7 @@ public class FtpDownloader implements Downloader {
         try {
             ftpClient.disconnect();
         } catch (IOException | NullPointerException e) {
-            LOGGER.log(Level.INFO, FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
+            LOGGER.log(Level.WARNING, FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
         }
     }
 
