@@ -18,6 +18,8 @@ import java.util.UUID;
  */
 
 public class FileResource {
+    public static final String INVALID_PROTOCOL_MSG = "Invalid protocol or no protocol support for URL : ";
+    public static final String PATH_SEPARATOR = "/";
     private final String baseURL;
     private final String protocol;
     private final String filename;
@@ -36,7 +38,7 @@ public class FileResource {
     private String extractProtocol() throws MalformedURLException {
         String protocol = extractProtocolString();
         if(protocol == null || !Protocol.isSupported(protocol)) {
-            throw new MalformedURLException("Invalid protocol or no protocol support for URL : " + baseURL);
+            throw new MalformedURLException(INVALID_PROTOCOL_MSG + baseURL);
         }
 
         return protocol.toLowerCase();
@@ -56,7 +58,7 @@ public class FileResource {
     }
 
     private String buildFileName() {
-        return baseURL.substring(baseURL.lastIndexOf("/")+1, baseURL.length());
+        return baseURL.substring(baseURL.lastIndexOf(PATH_SEPARATOR)+1, baseURL.length());
     }
 
     private String checkIfNull(String fileName) {

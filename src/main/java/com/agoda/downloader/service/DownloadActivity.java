@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 public class DownloadActivity {
     private final static Logger LOGGER = Logger.getLogger(DownloadActivity.class.getName());
+    public static final String CAN_T_CLEANUP = "can't cleanup ";
 
     private final FileResource fileResource;
     private final Downloader downloader;
@@ -70,7 +71,7 @@ public class DownloadActivity {
             try {
                 FileDeleteStrategy.FORCE.delete(new File(filePath));
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "cant cleanup " + filePath );
+                LOGGER.log(Level.WARNING, CAN_T_CLEANUP + filePath );
             }
         }
     }
