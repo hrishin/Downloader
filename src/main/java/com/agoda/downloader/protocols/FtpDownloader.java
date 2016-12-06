@@ -21,6 +21,15 @@ public class FtpDownloader implements Downloader {
     private final static Logger LOGGER = Logger.getLogger(FtpDownloader.class.getName());
 
     public static final int DEFAULT_PORT = 21;
+    public static final String EMPTY_FILE_ERR_MSG = "File is empty, could not download it";
+    public static final String FILE_SIZE = "File size :";
+    public static final String FTP_DOWNLOADER_STREAM_CLOSE_ISSUE = "FtpDownloader Stream close issue";
+    public static final String DOWNLOAD_STATUS_MSG = "Download Status :";
+    public static final String FTP_DOWNLOADING = "FTP downloading : ";
+    public static final String DOWNLOAD_FAIL_ERR_MSG = "Failed to download the file";
+    public static final String FILE_PATH_REGEX = "//";
+    public static final String PATH_CREDENTIAL_REGEX = "@";
+    public static final String PATH_REGEX = "/";
 
     private String server;
     private int port;
@@ -72,17 +81,17 @@ public class FtpDownloader implements Downloader {
         FTPFile[] files = ftpClient.listFiles(this.filePath);
         this.fileSize = files[0].getSize();
         if(files.length <=  0 || this.fileSize <= 0) {
-            throw new IOException("File is empty, could not download it");
+            throw new IOException(EMPTY_FILE_ERR_MSG);
         }
-        LOGGER.info("File size :" + FileUtil.inKB(fileSize) + " bytes");
-        LOGGER.info("File size :" + FileUtil.inMB(fileSize)+ " MB");
+        LOGGER.info(FILE_SIZE + FileUtil.inKB(fileSize) + " Bytes");
+        LOGGER.info(FILE_SIZE + FileUtil.inMB(fileSize)+ " MB");
     }
 
     private void cleanUP(FTPClient ftpClient) {
         try {
             ftpClient.disconnect();
         } catch (IOException | NullPointerException e) {
-            LOGGER.warning("FtpDownloader Stream close issue");
+            LOGGER.warning(FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
         }
     }
 
@@ -102,7 +111,7 @@ public class FtpDownloader implements Downloader {
             public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
                 int percent = FileUtil.calculateProgress(totalBytesTransferred, fileSize);
                 percent = percent > 100 ? 100 : percent;
-                LOGGER.info("Download Status :" + filePath +" "+percent+"%");
+                LOGGER.info(DOWNLOAD_STATUS_MSG + filePath +" "+percent+"%");
             }
 
         };
@@ -117,7 +126,7 @@ public class FtpDownloader implements Downloader {
     }
 
     private void downloadFile(String path, String fileName, FTPClient ftpClient) throws IOException {
-        LOGGER.log(Level.INFO, "FTP downloading : "+ fileName);
+        LOGGER.log(Level.INFO, FTP_DOWNLOADING + fileName);
         File downloadFile = new File(path + fileName);
         OutputStream outputStream = null;
         try {
@@ -126,7 +135,7 @@ public class FtpDownloader implements Downloader {
             if(success) {
                 this.downloadState = DownloadState.COMPLETED;
             } else {
-                throw new IOException("Failed to download the file");
+                throw new IOException(DOWNLOAD_FAIL_ERR_MSG);
             }
         } finally {
             cleanUp(outputStream);
@@ -139,16 +148,16 @@ public class FtpDownloader implements Downloader {
                 outputStream.flush();
                 outputStream.close();
             } catch (IOException e) {
-                LOGGER.log(Level.WARNING, "FtpDownloader Stream close issue");
+                LOGGER.log(Level.WARNING, FTP_DOWNLOADER_STREAM_CLOSE_ISSUE);
             }
         }
     }
 
     private void processSourceURL(String source) {
         if(source.contains("@")) {
-            String[] sourceData = source.split("@");
-            processCredentials(sourceData[0].split("//")[1]);
-            processPath("//" + sourceData[1]);
+            String[] sourceData = source.split(PATH_CREDENTIAL_REGEX);
+            processCredentials(sourceData[0].split(FILE_PATH_REGEX)[1]);
+            processPath(FILE_PATH_REGEX + sourceData[1]);
         } else {
             processCredentials(source);
         }
@@ -161,16 +170,16 @@ public class FtpDownloader implements Downloader {
     }
 
     private void processPath(String pathData) {
-        String sourceData = pathData.split("//")[1];
+        String sourceData = pathData.split(FILE_PATH_REGEX)[1];
         if(sourceData.split(":").length == 2) {
             String[] hostPort = sourceData.split(":");
             this.port = Integer.parseInt(hostPort[1]);
             this.server = hostPort[0];
-            this.filePath = sourceData.substring(sourceData.indexOf("/"), sourceData.length());
+            this.filePath = sourceData.substring(sourceData.indexOf(PATH_REGEX), sourceData.length());
         } else {
             this.port = DEFAULT_PORT;
-            this.server = sourceData.substring(0, sourceData.indexOf("/"));
-            this.filePath = sourceData.substring(sourceData.indexOf("/"), sourceData.length());
+            this.server = sourceData.substring(0, sourceData.indexOf(PATH_REGEX));
+            this.filePath = sourceData.substring(sourceData.indexOf(PATH_REGEX), sourceData.length());
         }
     }
 
