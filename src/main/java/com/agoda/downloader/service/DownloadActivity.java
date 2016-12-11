@@ -37,11 +37,14 @@ public class DownloadActivity {
     }
 
     /**
-     * Returns {@code {@link Callable}} instances of {@code {@link DownloadTask}}
+     * Returns {@code {@link Callable}} instance
      * @return
      */
     public Callable<DownloadActivity> getDownloadCall() {
-        return new DownloadTask();
+        return () -> {
+            downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
+            return this;
+        };
     }
 
     /**
@@ -72,24 +75,6 @@ public class DownloadActivity {
             } catch (IOException e) {
                 LOGGER.log(Level.WARNING, "cant cleanup " + filePath );
             }
-        }
-    }
-
-    /**
-     * Creates new Callable DownloadTask and override call method to start
-     * resources downloading using {@code {@link Downloader}} instance
-     */
-    class DownloadTask implements Callable<DownloadActivity> {
-        private DownloadActivity activity;
-
-        DownloadTask() {
-            activity = DownloadActivity.this;
-        }
-
-        @Override
-        public DownloadActivity call() throws Exception {
-            downloader.download(fileResource.getBaseURL(), downloadPath, fileResource.getFilename());
-            return activity;
         }
     }
 }
