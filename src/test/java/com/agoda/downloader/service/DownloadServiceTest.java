@@ -20,7 +20,7 @@ public class DownloadServiceTest extends DownloadSetup {
     private final static Logger LOGGER = Logger.getLogger(DownloadServiceTest.class.getName());
 
     @Test
-    public void appTest1() throws ParseException, ConfigurationException {
+    public void appIntegrationTest() throws ParseException, ConfigurationException {
         String[] args = {"-dl", downloadLocation,
                         "-s", httpResource + "," + ftpResource};
         ConfigLoader configLoader = new ConfigLoader(args);

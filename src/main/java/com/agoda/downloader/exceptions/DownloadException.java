@@ -10,8 +10,10 @@ import java.util.logging.Logger;
  */
 public class DownloadException extends Exception {
     private final static Logger LOGGER = Logger.getLogger(DownloadException.class.getName());
+    public static final String FILE_CLEANED = "File cleaned : ";
 
     final String filePath;
+    private final String CLEANING_FAILED_ERR_MSG = "File cleaning failed :";
 
     public DownloadException(String filePath) {
         this.filePath = filePath;
@@ -45,9 +47,9 @@ public class DownloadException extends Exception {
     private void cleanUp(String filePath) {
         try {
             FileDeleteStrategy.FORCE.delete(new File(filePath));
-            LOGGER.info("File cleaned : " + filePath);
+            LOGGER.info(FILE_CLEANED + filePath);
         } catch (Exception e) {
-            LOGGER.info("File cleaning failed :" + filePath);
+            LOGGER.info(CLEANING_FAILED_ERR_MSG + filePath);
         }
     }
 

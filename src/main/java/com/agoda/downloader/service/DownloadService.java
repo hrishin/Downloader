@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
  */
 public class DownloadService {
     private final static Logger LOGGER = Logger.getLogger(DownloadService.class.getName());
+    public static final String DOWNLOAD_COMPLETE = "Download Complete : ";
+    public static final String DOWNLOAD_FAILED = "Download Failed : ";
 
     private final String sources;
     private final String downloadLocation;
@@ -77,12 +79,11 @@ public class DownloadService {
     }
 
     /**
-     *  Get all {@code {@link DownloadActivity}}
-     *
+     *  Get all {@code {@link DownloadActivity}} that represent Future task
      * @return
      */
     public List<DownloadActivity> getDownloadActivities() {
-        return downloadActivities;
+        return downloadActivities.stream().collect(Collectors.toList());
     }
 
     /**
@@ -94,11 +95,10 @@ public class DownloadService {
         for (int i=0; i < downloadActivities.size(); i++) {
             try {
                 DownloadActivity activity = getUpdatedActivity();
-                LOGGER.log(Level.INFO, "Download Complete : " + activity.getFileName());
+                LOGGER.log(Level.INFO, DOWNLOAD_COMPLETE + activity.getFileName());
             } catch (DownloadException e) {
-                LOGGER.log(Level.INFO, "Download Failed : " + e.getFilePath());
+                LOGGER.log(Level.INFO, DOWNLOAD_FAILED + e.getFilePath());
             }
-
         }
     }
 
